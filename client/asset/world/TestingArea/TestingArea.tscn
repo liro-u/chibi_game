@@ -1,0 +1,302 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://asset/texture/prototype/Dark/texture_01.png" type="Texture" id=1]
+[ext_resource path="res://asset/texture/prototype/Orange/texture_01.png" type="Texture" id=2]
+[ext_resource path="res://asset/world/PlayerSpawnPoint.gd" type="Script" id=3]
+[ext_resource path="res://asset/UI/debug/debug_UI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://asset/camera/CamRoot.tscn" type="PackedScene" id=5]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 50, 0.5, 50 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 75, 50, 1 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 25, 0.25, 25 )
+
+[sub_resource type="CubeMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 3, 2, 1 )
+
+[sub_resource type="BoxShape" id=6]
+
+[node name="TestingArea" type="Spatial"]
+
+[node name="Floor" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Floor"]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="Floor/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor/MeshInstance/StaticBody"]
+shape = SubResource( 3 )
+
+[node name="obstacle" type="Spatial" parent="."]
+
+[node name="6x2" type="Spatial" parent="obstacle"]
+
+[node name="cube48" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.78487, 5, -14 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube48"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube48/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube49" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.78487, 5, -12 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube49"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube49/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube50" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.78487, 5, -10 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube50"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube50/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube51" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7849, 5, -14 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube51"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube51/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube52" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7849, 5, -12 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube52"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube52/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube53" type="MeshInstance" parent="obstacle/6x2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7849, 5, -10 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/6x2/cube53"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/6x2/cube53/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="rampe" type="Spatial" parent="obstacle"]
+transform = Transform( -0.707107, 5.65142e-08, 0.707107, 0.707107, -3.09086e-08, 0.707107, 6.18172e-08, 1, -1.81058e-08, -16.0778, 2.70711, -11 )
+
+[node name="cube67" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, 9.53674e-07, 2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube67"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube67/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube68" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, 9.53674e-07, 4 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube68"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube68/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube69" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, 0, -2, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube69"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube69/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube70" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, -2, 2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube70"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube70/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube71" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, -2, 4 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube71"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube71/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube72" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -1.90735e-06, 0, -6 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube72"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube72/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube73" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -1.90735e-06, 9.53674e-07, -4 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube73"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube73/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube74" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, 9.53674e-07, -2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube74"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube74/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube75" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -1.90735e-06, -2, -6 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube75"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube75/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube76" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -1.90735e-06, -2, -4 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube76"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube76/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube77" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, -9.53674e-07, -2, -2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube77"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube77/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube66" type="MeshInstance" parent="obstacle/rampe"]
+transform = Transform( 1, 0, -1.11925e-15, 0, 1, 3.55271e-15, -1.11925e-15, 1.77636e-15, 1, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/rampe/cube66"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/rampe/cube66/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube6" type="MeshInstance" parent="obstacle"]
+transform = Transform( 4.82963, 0, 1.2941, 0, 1, 0, -1.2941, 0, 4.82963, 4.21513, 1, -16 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/cube6"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/cube6/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="escalier rond" type="Spatial" parent="obstacle"]
+
+[node name="cube3" type="MeshInstance" parent="obstacle/escalier rond"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.21513, 1, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/escalier rond/cube3"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube3/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube2" type="MeshInstance" parent="obstacle/escalier rond"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.21513, 2, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/escalier rond/cube2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube2/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube" type="MeshInstance" parent="obstacle/escalier rond"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.21513, -1.19209e-07, 2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/escalier rond/cube"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube4" type="MeshInstance" parent="obstacle/escalier rond"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.21513, 1, 2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/escalier rond/cube4"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube4/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="cube5" type="MeshInstance" parent="obstacle/escalier rond"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.21513, 3, 2 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="obstacle/escalier rond/cube5"]
+
+[node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube5/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="debug_UI" parent="." instance=ExtResource( 4 )]
+
+[node name="CamRoot" parent="." instance=ExtResource( 5 )]
+
+[node name="PlayerSpawnPoint" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Position3D" type="Position3D" parent="PlayerSpawnPoint"]
+
+[node name="Position3D2" type="Position3D" parent="PlayerSpawnPoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6 )
+
+[node name="Players" type="Node" parent="."]

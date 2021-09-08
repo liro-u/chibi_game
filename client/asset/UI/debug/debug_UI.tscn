@@ -1,0 +1,153 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://asset/UI/debug/debug_UI.gd" type="Script" id=1]
+
+[node name="debug_UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Key" type="Label" parent="."]
+margin_left = 32.0
+margin_top = 8.0
+margin_right = 1056.0
+margin_bottom = 22.0
+text = "key pressed :"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="movement" type="Control" parent="."]
+margin_top = 16.0
+margin_right = 1024.0
+margin_bottom = 16.0
+
+[node name="Label_Direction" type="Label" parent="movement"]
+margin_left = 31.0
+margin_top = 21.0
+margin_right = 148.0
+margin_bottom = 35.0
+text = "direction : (0, 0, 0)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Velocity" type="Label" parent="movement"]
+margin_left = 31.0
+margin_top = 35.0
+margin_right = 148.0
+margin_bottom = 49.0
+text = "velocity : (0, 0, 0)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health" type="Control" parent="."]
+margin_top = 51.0
+margin_right = 1024.0
+margin_bottom = 51.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Health" type="Label" parent="health"]
+margin_left = 31.0
+margin_top = 35.0
+margin_right = 107.0
+margin_bottom = 49.0
+text = "health : 100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Health_Tic" type="Label" parent="health"]
+margin_left = 32.0
+margin_top = 49.0
+margin_right = 128.0
+margin_bottom = 63.0
+text = "health regene timer :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Health_no_damage" type="Label" parent="health"]
+margin_left = 32.0
+margin_top = 63.0
+margin_right = 128.0
+margin_bottom = 77.0
+text = "health no damage timer :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="respawn" type="Control" parent="."]
+margin_top = 55.0
+margin_right = 1024.0
+margin_bottom = 55.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Respawn" type="Label" parent="respawn"]
+margin_left = 31.0
+margin_top = 104.0
+margin_right = 199.0
+margin_bottom = 118.0
+text = "Respawn time :"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_is_dead" type="Label" parent="respawn"]
+margin_left = 31.0
+margin_top = 118.0
+margin_right = 199.0
+margin_bottom = 132.0
+text = "is dead :"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dodge" type="Control" parent="."]
+margin_top = 59.0
+margin_right = 1024.0
+margin_bottom = 59.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_is_Dodging" type="Label" parent="dodge"]
+margin_left = 31.0
+margin_top = 144.0
+margin_right = 148.0
+margin_bottom = 158.0
+text = "is dodging : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_dodge" type="Label" parent="dodge"]
+margin_left = 31.0
+margin_top = 160.0
+margin_right = 148.0
+margin_bottom = 174.0
+text = "dodge : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_dodge_timer_reload" type="Label" parent="dodge"]
+margin_left = 31.0
+margin_top = 176.0
+margin_right = 148.0
+margin_bottom = 190.0
+text = "dodge timer reload : "
+__meta__ = {
+"_edit_use_anchors_": false
+}

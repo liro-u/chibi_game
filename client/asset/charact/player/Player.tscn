@@ -1,0 +1,59 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://asset/charact/player/Player_Control.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.568191
+height = 1.81689
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "dodge"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=5]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=6]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=7]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=8]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id=9]
+states/Dodge/node = SubResource( 2 )
+states/Dodge/position = Vector2( 81, 201 )
+states/Idle/node = SubResource( 3 )
+states/Idle/position = Vector2( 81, 60 )
+states/Walking/node = SubResource( 4 )
+states/Walking/position = Vector2( 323, 60 )
+transitions = [ "Idle", "Walking", SubResource( 5 ), "Walking", "Idle", SubResource( 6 ), "Idle", "Dodge", SubResource( 7 ), "Dodge", "Idle", SubResource( 8 ) ]
+start_node = "Idle"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=10]
+
+[node name="Player" type="KinematicBody"]
+script = ExtResource( 2 )
+animationTree_Path = NodePath("AnimationTree")
+
+[node name="Body_CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.48119, 0 )
+shape = SubResource( 1 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 9 )
+parameters/playback = SubResource( 10 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.24126, 0 )
