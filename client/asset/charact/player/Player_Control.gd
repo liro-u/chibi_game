@@ -7,10 +7,15 @@ var animationTree
 
 export(NodePath) var mesh_Path
 var mesh_Node
+
+export(NodePath) var body_collision_path
+var body_collision
 #-----------------------------------------------
 
 #-----------------------------------------------
 # Basic Movement
+export var gravity_on = true
+
 const GRAVITY = 9.8
 const MAX_SLOPE_ANGLE = 40
 
@@ -46,7 +51,7 @@ var is_dead = false
 
 #-------------------------------------------------
 # Attacking
-var is_attacking = false
+var can_attack = true
 #--------------------------------------------------
 
 #------------------------------------------------
@@ -66,8 +71,12 @@ var dodge_reload_amount = 1
 #------------------------------------------------
 
 func _ready():
+	if gravity_on == false:
+		print("WARNING : gravity is off")
+		
 	animationTree = get_node(animationTree_Path)
-
+	body_collision = get_node(body_collision_path)
+	
 	if mesh_Path == "":
 		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
 	elif animationTree.active == false or animationTree.anim_player == "":
@@ -80,7 +89,7 @@ func error_msg(msg):
 	print("WARNING : " + msg)
 	
 func _physics_process(delta):
-	if is_network_master():
+	if Server.dev_mode_offline == true or is_network_master():
 		process_input(delta)
 	
 		if health > 0:
@@ -90,14 +99,14 @@ func _physics_process(delta):
 			process_health(delta)
 		else:
 			process_respawn(delta)
-			
-		rpc_unreliable_id(1, "update_player", name, translation, mesh_Node.rotation.y)
 		
-remote func update_player(id, update_translation, mesh_rotation):
+		if Server.dev_mode_offline == false:
+			rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
+		
+remote func update_player(update_translation, mesh_rotation):
 	if not is_network_master():
-		if name == id:
-			translation = update_translation
-			mesh_Node.rotation.y = mesh_rotation
+		translation = update_translation
+		mesh_Node.rotation.y = mesh_rotation
 	
 func process_input(delta):
 	#----------------------------------------
@@ -134,8 +143,12 @@ func process_input(delta):
 	#--------------------------------------------------
 	# Attack
 	if Input.is_action_pressed("attack"):
-		if is_attacking == false:
-			is_attacking = true
+		if can_attack == true:
+			can_attack = false
+			if Server.dev_mode_offline == true:
+				make_attack()
+			else:
+				rpc_id(1,"make_attack")
 			
 	#--------------------------------------------------
 	
@@ -151,7 +164,7 @@ func process_movement(delta):
 	dir.y = 0
 	dir = dir.normalized()
 	
-	if is_on_floor():
+	if is_on_floor() or gravity_on == false:
 		vel.y = 0
 	else:
 		vel.y -= delta * GRAVITY
@@ -192,12 +205,12 @@ func process_movement(delta):
 
 func set_anim(anim_name):
 	animationTree["parameters/playback"].travel(anim_name)
-	rpc_id(1, "update_player_anim", name, anim_name)
+	if Server.dev_mode_offline == false:
+		rpc_id(1, "update_player_anim", anim_name)
 
-remote func update_anim(id, anim_name):
+remote func update_anim(anim_name):
 	if not is_network_master():
-		if name == id:
-			animationTree["parameters/playback"].travel(anim_name)
+		animationTree["parameters/playback"].travel(anim_name)
 
 func anim_end(anim_name):
 	match anim_name:
@@ -224,8 +237,10 @@ func add_health(additional_health):
 #-------------------------------------------------------
 #### ATTACKING ####
 func process_attacking(delta):
-	pass
-	
+	print("WARNING : you need to code the reload attack system")
+		
+sync func make_attack():
+	print("WARNING : you need to code this attack system")
 #-------------------------------------------------------
 #### TAKE DAMAGE ####
 func take_damage(damage):
@@ -239,8 +254,10 @@ func take_damage(damage):
 
 func process_respawn(delta):
 	if is_dead == false:
-		hide()
-		rpc_id(1, "hide_player", name)
+		if Server.dev_mode_offline == false:
+			rpc_id(1, "kill_player")
+		else:
+			kill_player()
 		is_dead = true
 	if is_dead == true:
 		if time_respawn <= 0:
@@ -250,20 +267,20 @@ func process_respawn(delta):
 			health_tic_time = 0
 			health_time_no_damage = 0
 			transform.origin = Vector3(0, 0, 0)
-			show()
-			rpc_id(1, "show_player", name)
+			if Server.dev_mode_offline == false:
+				rpc_id(1, "revive_player")
+			else:
+				revive_player()
 		else:
 			time_respawn -= delta
 
-remote func hide_player(id):
-	if not is_network_master():
-		if id == name:
-			hide()
+remote func kill_player():
+	hide()
+	body_collision.disabled = true
 			
-remote func show_player(id):
-	if not is_network_master():
-		if id == name:
-			show()
+remote func revive_player():
+	show()
+	body_collision.disabled = false
 #---------------------------------------------------
 #### DODGING ####
 

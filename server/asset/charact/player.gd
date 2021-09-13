@@ -1,14 +1,16 @@
 extends Node
 
-remote func update_player(id, update_translation, mesh_rotation):
-	rpc_unreliable("update_player", id, update_translation, mesh_rotation)
+remote func update_player(update_translation, mesh_rotation):
+	rpc_unreliable("update_player", update_translation, mesh_rotation)
 
-remote func update_player_anim(id, anim_name):
-	rpc("update_anim", id, anim_name)
+remote func update_player_anim(anim_name):
+	rpc("update_anim", anim_name)
 	
-remote func hide_player(id):
-	rpc("hide_player", id)
+remote func kill_player():
+	rpc("kill_player")
 	
-remote func show_player(id):
-	rpc("show_player", id)
+remote func revive_player():
+	rpc("revive_player")
 	
+remote func make_attack():
+	rpc("make_attack")

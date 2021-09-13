@@ -1,6 +1,8 @@
 extends Node
 
-const DEFAULT_IP = "192.168.1.24"
+var dev_mode_offline = true
+
+const DEFAULT_IP = "192.168.1.16"
 const DEFAULT_PORT = 3234
 
 var network = NetworkedMultiplayerENet.new()
@@ -14,10 +16,14 @@ sync var player_data = {}
 var world
 
 func _ready():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
-	get_tree().connect("connection_failed", self, "_connected_fail")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	if dev_mode_offline == true:
+		print("WARNING : DevMode is on")
+		call_deferred("load_world")
+	else:
+		get_tree().connect("network_peer_connected", self, "_player_connected")
+		get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+		get_tree().connect("connection_failed", self, "_connected_fail")
+		get_tree().connect("server_disconnected", self, "_server_disconnected")
 	
 func _connect_to_server():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
@@ -54,8 +60,11 @@ sync func load_world():
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().get_node("Lobby").queue_free()
 	
-	rpc_id(1, "spawn_players", Server.local_player_id, Save.save_data["Last_charact"])
-	
+	if dev_mode_offline == false:
+		rpc_id(1, "spawn_players", Server.local_player_id, Save.save_data["Last_charact"])
+	else:
+		spawn_player(Server.local_player_id, Save.save_data["Last_charact"])
+
 sync func spawn_player(id, charact):
 	var player_charact = load(charact)
 	var player = player_charact.instance()
@@ -64,7 +73,7 @@ sync func spawn_player(id, charact):
 	world.get_node("Players").add_child(player)
 	if id == local_player_id:
 		world.get_node("debug_UI").set_player(player)
-		world.get_node("CamRoot").set_follow_point(player.get_node("Position3D"))
+		world.get_node("CamRoot").set_follow_point(player.get_node("CameraPoint"))
 	player.set_network_master(id)
 	
 	

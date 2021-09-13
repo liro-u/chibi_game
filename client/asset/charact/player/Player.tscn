@@ -3,8 +3,8 @@
 [ext_resource path="res://asset/charact/player/Player_Control.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.568191
-height = 1.81689
+radius = 0.95489
+height = 1.03759
 
 [sub_resource type="AnimationNodeAnimation" id=2]
 animation = "dodge"
@@ -43,6 +43,7 @@ start_node = "Idle"
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 2 )
 animationTree_Path = NodePath("AnimationTree")
+body_collision_path = NodePath("Body_CollisionShape")
 
 [node name="Body_CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.48119, 0 )
@@ -55,5 +56,5 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Position3D" type="Position3D" parent="."]
+[node name="CameraPoint" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.24126, 0 )
