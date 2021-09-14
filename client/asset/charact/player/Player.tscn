@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://asset/charact/player/Player_Control.gd" type="Script" id=2]
 
@@ -40,6 +40,9 @@ start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=10]
 
+[sub_resource type="ViewportTexture" id=11]
+viewport_path = NodePath("player_name/Viewport")
+
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 2 )
 animationTree_Path = NodePath("AnimationTree")
@@ -58,3 +61,18 @@ __meta__ = {
 
 [node name="CameraPoint" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.24126, 0 )
+
+[node name="player_name" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.39404, 0 )
+billboard = 1
+texture = SubResource( 11 )
+
+[node name="Viewport" type="Viewport" parent="player_name"]
+size = Vector2( 94, 14 )
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="Label_player_name" type="Label" parent="player_name/Viewport"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Unamed"

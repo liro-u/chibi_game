@@ -9,7 +9,7 @@ func _ready():
 	var file = File.new()
 	
 	if not file.file_exists(SAVEGAME) or new_value_added == true:
-		save_data = {"Player_name":"Unamed", "Last_charact":"res://asset/charact/bronya/Bronya_Player.tscn", "team":"None"}
+		save_data = {"Player_name":"Unamed", "Last_charact":"res://asset/charact/bronya/Bronya_Player.tscn"}
 		save_game()
 	file.open(SAVEGAME, File.READ)
 	var content = file.get_as_text()

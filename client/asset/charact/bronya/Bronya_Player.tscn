@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://asset/charact/bronya/Bronya_mesh.tscn" type="PackedScene" id=1]
 [ext_resource path="res://asset/charact/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://asset/charact/bronya/Bronya_Player.gd" type="Script" id=3]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
+
+[sub_resource type="ViewportTexture" id=2]
+viewport_path = NodePath("player_name/Viewport")
 
 [node name="Bronya" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
@@ -20,5 +23,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0348, 1.74459 )
 anim_player = NodePath("../Bronya/AnimationPlayer")
 active = true
 parameters/playback = SubResource( 1 )
+
+[node name="player_name" parent="." index="4"]
+texture = SubResource( 2 )
 
 [editable path="Bronya"]

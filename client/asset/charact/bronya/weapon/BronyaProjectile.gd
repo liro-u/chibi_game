@@ -7,6 +7,7 @@ const KILL_TIMER = 4
 var timer = 0
 
 var exception = []
+var player_property_id
 
 var Area_node
 
@@ -22,8 +23,9 @@ func _physics_process(delta):
 		queue_free()
 		
 func collided(body):
-	if exception.has(body) == false:
-		if body.has_method("take_damage"):
-			body.take_damage(DAMAGE)
-				
-		queue_free()
+	if not body.is_in_group("team_" + str(Server.players[int(player_property_id)]["team"])):
+		if exception.has(body) == false:
+			if body.has_method("take_damage"):
+				body.take_damage(DAMAGE, player_property_id)
+					
+			queue_free()

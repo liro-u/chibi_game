@@ -23,18 +23,21 @@ func _ready():
 #-----------------------------------------------
 #### ATTACK ####
 func process_attacking(delta):
-	if can_attack == false:
-		if timer_reload_attack <= 0:
-			timer_reload_attack = TIMER_RELOAD_ATTACK
-			can_attack = true
-		else:
-			timer_reload_attack -= delta
+	if last_attack_is_shoot == true:
+		if can_attack == false:
+			if timer_reload_attack <= 0:
+				timer_reload_attack = TIMER_RELOAD_ATTACK
+				can_attack = true
+			else:
+				timer_reload_attack -= delta
 			
 sync func make_attack():
+	last_attack_is_shoot = true
 	var projectile = bronya_projectile.instance()
 	var scene_player_projectile = Server.world.get_node("PlayersWeapon")
 	scene_player_projectile.add_child(projectile)
 	
 	projectile.exception = exception_colision
+	projectile.player_property_id = int(name)
 	projectile.global_transform = projectile_point.global_transform
 #-----------------------------------------------------

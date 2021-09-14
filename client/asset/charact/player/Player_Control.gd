@@ -47,11 +47,14 @@ var health_tic_time = 0
 export var TIMER_RESPAWN = 3
 var time_respawn = TIMER_RESPAWN
 var is_dead = false
+
+var last_damager_id
 #--------------------------------------------------
 
 #-------------------------------------------------
 # Attacking
 var can_attack = true
+var last_attack_is_shoot = true
 #--------------------------------------------------
 
 #------------------------------------------------
@@ -84,12 +87,18 @@ func _ready():
 	else:
 		mesh_Node = get_node(mesh_Path)
 		
+	var label_player_name = $player_name/Viewport/Label_player_name
+	label_player_name.text = Server.players[int(name)]["Player_name"]
+	label_player_name.hide()
+	label_player_name.show()
+	$player_name/Viewport.size = label_player_name.rect_size
+	
 func error_msg(msg):
 	set_physics_process(false)
 	print("WARNING : " + msg)
 	
 func _physics_process(delta):
-	if Server.dev_mode_offline == true or is_network_master():
+	if is_network_master():
 		process_input(delta)
 	
 		if health > 0:
@@ -100,8 +109,7 @@ func _physics_process(delta):
 		else:
 			process_respawn(delta)
 		
-		if Server.dev_mode_offline == false:
-			rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
+		rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
 		
 remote func update_player(update_translation, mesh_rotation):
 	if not is_network_master():
@@ -145,10 +153,8 @@ func process_input(delta):
 	if Input.is_action_pressed("attack"):
 		if can_attack == true:
 			can_attack = false
-			if Server.dev_mode_offline == true:
-				make_attack()
-			else:
-				rpc_id(1,"make_attack")
+			last_attack_is_shoot = false
+			rpc_id(1, "make_attack")
 			
 	#--------------------------------------------------
 	
@@ -205,8 +211,7 @@ func process_movement(delta):
 
 func set_anim(anim_name):
 	animationTree["parameters/playback"].travel(anim_name)
-	if Server.dev_mode_offline == false:
-		rpc_id(1, "update_player_anim", anim_name)
+	rpc_id(1, "update_player_anim", anim_name)
 
 remote func update_anim(anim_name):
 	if not is_network_master():
@@ -243,10 +248,11 @@ sync func make_attack():
 	print("WARNING : you need to code this attack system")
 #-------------------------------------------------------
 #### TAKE DAMAGE ####
-func take_damage(damage):
+func take_damage(damage, last_damage_id = null):
 	health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
 	health_tic_time = 0
 	health -= damage
+	last_damager_id = last_damage_id
 	health = max(health, 0)
 
 #----------------------------------------------------------
@@ -254,10 +260,7 @@ func take_damage(damage):
 
 func process_respawn(delta):
 	if is_dead == false:
-		if Server.dev_mode_offline == false:
-			rpc_id(1, "kill_player")
-		else:
-			kill_player()
+		rpc_id(1, "kill_player", int(name), last_damager_id)
 		is_dead = true
 	if is_dead == true:
 		if time_respawn <= 0:
@@ -267,10 +270,7 @@ func process_respawn(delta):
 			health_tic_time = 0
 			health_time_no_damage = 0
 			transform.origin = Vector3(0, 0, 0)
-			if Server.dev_mode_offline == false:
-				rpc_id(1, "revive_player")
-			else:
-				revive_player()
+			rpc_id(1, "revive_player")
 		else:
 			time_respawn -= delta
 

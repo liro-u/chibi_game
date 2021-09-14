@@ -58,19 +58,31 @@ func make_team():
 				
 		players_with_team += 1
 		players[player_id]["team"] = team
-	rset("players", players) 
 	print("Team assigned to all players")
+
+func reset_player_stat_game():
+	for player_id in players_id:
+		players[player_id]["kill"] = 0
+		players[player_id]["death"] = 0
+	rset("players", players) 
 	
 func load_world():
 	if players.size() == max_players:
 		make_team()
+		reset_player_stat_game()
 		rpc("load_world")
 		world = preload("res://asset/world/TestingArea/TestingArea.tscn").instance()
 		get_tree().get_root().add_child(world)
 
-remote func spawn_players(id, charact):
+remote func spawn_players(id):
 	var player = PLAYER.instance()
 	player.name = str(id)
 	world.get_node("Players").add_child(player)
 	
-	rpc("spawn_player", id, charact)
+	rpc("spawn_player", id)
+
+func update_player_stat(death_id, killer_id):
+	players[death_id]["death"] += 1
+	if killer_id != null:
+		players[killer_id]["kill"] += 1
+	rset("players", players)

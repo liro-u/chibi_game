@@ -155,6 +155,9 @@ __meta__ = {
 [node name="attack" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label_can_attack" type="Label" parent="attack"]
 margin_left = 31.113
@@ -172,6 +175,35 @@ margin_top = 286.0
 margin_right = 161.527
 margin_bottom = 300.0
 text = "attack timer reload :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score_board" type="Control" parent="."]
+margin_left = 2.5
+margin_top = 52.5
+margin_right = 42.5
+margin_bottom = 92.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="kill" type="Label" parent="score_board"]
+margin_left = 31.113
+margin_top = 270.0
+margin_right = 103.113
+margin_bottom = 284.0
+text = "kill :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="death" type="Label" parent="score_board"]
+margin_left = 32.527
+margin_top = 286.0
+margin_right = 161.527
+margin_bottom = 300.0
+text = "death :"
 __meta__ = {
 "_edit_use_anchors_": false
 }
