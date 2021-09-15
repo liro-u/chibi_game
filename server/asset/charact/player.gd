@@ -15,3 +15,9 @@ remote func revive_player():
 	
 remote func make_attack():
 	rpc("make_attack")
+
+remote func add_health(health):
+	rpc("add_health", health)
+
+remote func remove_health(damage):
+	rpc("remove_health", damage)

@@ -1,6 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=19 format=2]
 
+[ext_resource path="res://asset/charact/player/lifebar/texture/progressbar.png" type="Texture" id=1]
 [ext_resource path="res://asset/charact/player/Player_Control.gd" type="Script" id=2]
+[ext_resource path="res://asset/charact/player/lifebar/texture/under.png" type="Texture" id=3]
+[ext_resource path="res://asset/class/CurveTween.gd" type="Script" id=4]
+[ext_resource path="res://asset/charact/player/lifebar/healthBar.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.95489
@@ -40,13 +44,20 @@ start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=10]
 
-[sub_resource type="ViewportTexture" id=11]
-viewport_path = NodePath("player_name/Viewport")
+[sub_resource type="ViewportTexture" id=14]
+viewport_path = NodePath("info_player/Viewport")
+
+[sub_resource type="Curve" id=13]
+_data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=12]
+_data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 2 )
 animationTree_Path = NodePath("AnimationTree")
 body_collision_path = NodePath("Body_CollisionShape")
+health_bar_path = NodePath("info_player/Viewport/healthBar")
 
 [node name="Body_CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.48119, 0 )
@@ -62,17 +73,57 @@ __meta__ = {
 [node name="CameraPoint" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.24126, 0 )
 
-[node name="player_name" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.39404, 0 )
+[node name="info_player" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
 billboard = 1
-texture = SubResource( 11 )
+texture = SubResource( 14 )
 
-[node name="Viewport" type="Viewport" parent="player_name"]
-size = Vector2( 94, 14 )
+[node name="Viewport" type="Viewport" parent="info_player"]
+size = Vector2( 150, 29 )
 transparent_bg = true
 render_target_v_flip = true
 
-[node name="Label_player_name" type="Label" parent="player_name/Viewport"]
-margin_right = 40.0
+[node name="Label_player_name" type="Label" parent="info_player/Viewport"]
+margin_right = 54.0
 margin_bottom = 14.0
 text = "Unamed"
+
+[node name="healthBar" type="Control" parent="info_player/Viewport"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
+health_bar_under_path = NodePath("../../../info_player/Viewport/healthBar/health_bar_under")
+health_bar_over_path = NodePath("../../../info_player/Viewport/healthBar/health_bar_over")
+value_tween_path = NodePath("../../../info_player/Viewport/healthBar/valueTween")
+alpha_tween_path = NodePath("../../../info_player/Viewport/healthBar/alphaTween")
+color_friend = Color( 0.223529, 0.854902, 0.984314, 1 )
+color_enemi = Color( 0.929412, 0.117647, 0.117647, 1 )
+properti_node_path = NodePath("../../..")
+
+[node name="health_bar_under" type="TextureProgress" parent="info_player/Viewport/healthBar"]
+margin_top = 15.0
+margin_right = 150.0
+margin_bottom = 29.0
+value = 75.0
+texture_progress = ExtResource( 1 )
+nine_patch_stretch = true
+
+[node name="health_bar_over" type="TextureProgress" parent="info_player/Viewport/healthBar"]
+margin_top = 15.0
+margin_right = 150.0
+margin_bottom = 29.0
+value = 50.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 1 )
+tint_progress = Color( 0.223529, 0.854902, 0.984314, 1 )
+nine_patch_stretch = true
+
+[node name="valueTween" type="Tween" parent="info_player/Viewport/healthBar"]
+script = ExtResource( 4 )
+curve = SubResource( 13 )
+
+[node name="alphaTween" type="Tween" parent="info_player/Viewport/healthBar"]
+script = ExtResource( 4 )
+curve = SubResource( 12 )
+[connection signal="curve_tween" from="info_player/Viewport/healthBar/valueTween" to="info_player/Viewport/healthBar" method="_on_valueTween_curve_tween"]
+[connection signal="curve_tween" from="info_player/Viewport/healthBar/alphaTween" to="info_player/Viewport/healthBar" method="_on_alphaTween2_curve_tween"]

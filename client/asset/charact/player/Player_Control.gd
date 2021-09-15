@@ -10,6 +10,9 @@ var mesh_Node
 
 export(NodePath) var body_collision_path
 var body_collision
+
+export(NodePath) var health_bar_path
+var health_bar
 #-----------------------------------------------
 
 #-----------------------------------------------
@@ -79,6 +82,7 @@ func _ready():
 		
 	animationTree = get_node(animationTree_Path)
 	body_collision = get_node(body_collision_path)
+	health_bar = get_node(health_bar_path)
 	
 	if mesh_Path == "":
 		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
@@ -87,11 +91,13 @@ func _ready():
 	else:
 		mesh_Node = get_node(mesh_Path)
 		
-	var label_player_name = $player_name/Viewport/Label_player_name
+	var label_player_name = $info_player/Viewport/Label_player_name
 	label_player_name.text = Server.players[int(name)]["Player_name"]
 	label_player_name.hide()
 	label_player_name.show()
-	$player_name/Viewport.size = label_player_name.rect_size
+	$info_player.scale = Vector3(2, 2, 2)
+	
+	health_bar.init_health(health)
 	
 func error_msg(msg):
 	set_physics_process(false)
@@ -151,10 +157,11 @@ func process_input(delta):
 	#--------------------------------------------------
 	# Attack
 	if Input.is_action_pressed("attack"):
-		if can_attack == true:
-			can_attack = false
-			last_attack_is_shoot = false
-			rpc_id(1, "make_attack")
+		if not is_dead:
+			if can_attack == true:
+				can_attack = false
+				last_attack_is_shoot = false
+				rpc_id(1, "make_attack")
 			
 	#--------------------------------------------------
 	
@@ -228,16 +235,17 @@ func process_health(delta):
 	if health_time_no_damage <= 0:
 		if health != MAX_HEALTH:
 			if health_tic_time <= 0:
-				add_health(HEALTH_BY_TIC)
+				rpc_id(1, "add_health", HEALTH_BY_TIC)
 				health_tic_time = HEALTH_TIC_TIMER
 			else:
 				health_tic_time -= delta
 	else:
 		health_time_no_damage -= delta
 	
-func add_health(additional_health):
+sync func add_health(additional_health):
 	health += additional_health
 	health = min(health, MAX_HEALTH)
+	health_bar.init_health(health)
 
 #-------------------------------------------------------
 #### ATTACKING ####
@@ -249,12 +257,17 @@ sync func make_attack():
 #-------------------------------------------------------
 #### TAKE DAMAGE ####
 func take_damage(damage, last_damage_id = null):
-	health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
-	health_tic_time = 0
-	health -= damage
-	last_damager_id = last_damage_id
-	health = max(health, 0)
+	if is_network_master():
+		health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
+		health_tic_time = 0
+		last_damager_id = last_damage_id
+		rpc_id(1, "remove_health", damage)
+	
 
+sync func remove_health(damage):
+	health -= damage
+	health = max(health, 0)
+	health_bar.update_health(health)
 #----------------------------------------------------------
 #### RESPAWN ####
 
@@ -265,8 +278,6 @@ func process_respawn(delta):
 	if is_dead == true:
 		if time_respawn <= 0:
 			time_respawn = TIMER_RESPAWN
-			is_dead = false
-			health = MAX_HEALTH
 			health_tic_time = 0
 			health_time_no_damage = 0
 			transform.origin = Vector3(0, 0, 0)
@@ -274,11 +285,14 @@ func process_respawn(delta):
 		else:
 			time_respawn -= delta
 
-remote func kill_player():
+sync func kill_player():
 	hide()
 	body_collision.disabled = true
 			
-remote func revive_player():
+sync func revive_player():
+	is_dead = false
+	health = MAX_HEALTH
+	health_bar.init_health(health)
 	show()
 	body_collision.disabled = false
 #---------------------------------------------------

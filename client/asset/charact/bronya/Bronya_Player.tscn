@@ -7,7 +7,7 @@
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [sub_resource type="ViewportTexture" id=2]
-viewport_path = NodePath("player_name/Viewport")
+viewport_path = NodePath("info_player/Viewport")
 
 [node name="Bronya" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
@@ -24,7 +24,7 @@ anim_player = NodePath("../Bronya/AnimationPlayer")
 active = true
 parameters/playback = SubResource( 1 )
 
-[node name="player_name" parent="." index="4"]
+[node name="info_player" parent="." index="4"]
 texture = SubResource( 2 )
 
 [editable path="Bronya"]

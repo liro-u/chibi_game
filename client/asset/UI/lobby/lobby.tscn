@@ -64,6 +64,7 @@ margin_right = 338.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 250, 0 )
 align = 1
+max_length = 15
 placeholder_text = "Enter Name"
 
 [node name="IPLabel" type="Label" parent="CenterContainer/VBoxContainer/GridContainer"]
