@@ -171,10 +171,40 @@ __meta__ = {
 
 [node name="Label_attack_timer" type="Label" parent="attack"]
 margin_left = 32.527
-margin_top = 286.0
+margin_top = 302.0
 margin_right = 161.527
-margin_bottom = 300.0
+margin_bottom = 316.0
 text = "attack timer reload :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_last_attack_shoot" type="Label" parent="attack"]
+margin_left = 31.113
+margin_top = 286.0
+margin_right = 159.113
+margin_bottom = 300.0
+text = "last attack is shoot :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_attack_ammo" type="Label" parent="attack"]
+margin_left = 32.527
+margin_top = 318.0
+margin_right = 161.527
+margin_bottom = 332.0
+text = "attack ammo :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_attack_reload_ammo" type="Label" parent="attack"]
+margin_left = 32.527
+margin_top = 334.0
+margin_right = 167.527
+margin_bottom = 348.0
+text = "attack_reload_ammo:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -184,6 +214,7 @@ margin_left = 2.5
 margin_top = 52.5
 margin_right = 42.5
 margin_bottom = 92.5
+rect_scale = Vector2( 0.996015, 1.17294 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -38,11 +38,14 @@ func _physics_process(delta):
 	$dodge/Label_dodge_timer_reload.text = "dodge timer reload : " + str(stepify(player_Node.dodge_reload_timer, 0.1))
 	
 	$attack/Label_can_attack.text = "Can attack : " + str(player_Node.can_attack)
+	$attack/Label_last_attack_shoot.text = "Last attack is shoot : " + str(player_Node.last_attack_is_shoot)
 	$attack/Label_attack_timer.text = "Attack timer reload : " + str(stepify(player_Node.timer_reload_attack, 0.1))
-		
+	$attack/Label_attack_ammo.text = "Ammo : " + str(player_Node.ammo_attack)
+	$attack/Label_attack_reload_ammo.text = "Reload ammo timer : " + str(stepify(player_Node.reload_ammo_timer, 0.1))
+	
 	$score_board/death.text = "Death : " + str(Server.players[int(player_Node.name)]["death"])
 	$score_board/kill.text = "Kill : " + str(Server.players[int(player_Node.name)]["kill"])
-
+	
 func process_input(delta):
 	key_pressed = ""
 	if Input.is_action_pressed("movement_forward"):

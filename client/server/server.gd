@@ -1,6 +1,6 @@
 extends Node
 
-const DEFAULT_IP = "192.168.1.16"
+const DEFAULT_IP = "192.168.1.94"
 const DEFAULT_PORT = 3234
 
 var network = NetworkedMultiplayerENet.new()
@@ -11,7 +11,9 @@ var local_player_id = 0
 sync var players = {}
 sync var player_data = {}
 
+sync var teamMode
 var world
+var player_spawn_point
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -62,7 +64,8 @@ sync func spawn_player(id):
 	var player = player_charact.instance()
 	player.name = str(id)
 	player.add_to_group("team_" + str(Server.players[id]["team"]))
-	player.global_transform = world.get_node("PlayerSpawnPoint").get_next_position()
+	player_spawn_point = world.get_node("PlayerSpawn")
+	player.global_transform = player_spawn_point.get_next_position(teamMode)
 	world.get_node("Players").add_child(player)
 	if id == local_player_id:
 		world.get_node("debug_UI").set_player(player)

@@ -13,6 +13,8 @@ var body_collision
 
 export(NodePath) var health_bar_path
 var health_bar
+
+var camera_node
 #-----------------------------------------------
 
 #-----------------------------------------------
@@ -31,7 +33,7 @@ const MIN_SPEED_ANIMATION = 30
 
 var dir = Vector3()
 
-const ANGULAR_ACCELERATION = 7
+export var ANGULAR_ACCELERATION = 7
 #-------------------------------------------------
 
 #-------------------------------------------------
@@ -56,8 +58,13 @@ var last_damager_id
 
 #-------------------------------------------------
 # Attacking
+var is_attacking = false
+
 var can_attack = true
 var last_attack_is_shoot = true
+
+export var MAX_SPEED_ATTACK = 5
+export var ANGULAR_ACCELERATION_ATTACK = 3
 #--------------------------------------------------
 
 #------------------------------------------------
@@ -76,7 +83,13 @@ var dodge_reload_timer = DODGE_RELOAD_TIMER
 var dodge_reload_amount = 1
 #------------------------------------------------
 
+#----------------------------------------------
+# Debug
+var pass_camera_thing = true
+#-----------------------------------------------
 func _ready():
+	if pass_camera_thing:
+		print("WARNING : have to work on the killcam system")
 	if gravity_on == false:
 		print("WARNING : gravity is off")
 		
@@ -156,13 +169,16 @@ func process_input(delta):
 	
 	#--------------------------------------------------
 	# Attack
-	if Input.is_action_pressed("attack"):
-		if not is_dead:
+	if not is_dead:
+		if Input.is_action_pressed("attack"):
 			if can_attack == true:
 				can_attack = false
 				last_attack_is_shoot = false
 				rpc_id(1, "make_attack")
-			
+		if Input.is_action_just_pressed("attack"):
+			is_attacking = true
+		if Input.is_action_just_released("attack"):
+			is_attacking = false
 	#--------------------------------------------------
 	
 	#---------------------------------------------
@@ -186,14 +202,16 @@ func process_movement(delta):
 	hvel.y = 0
 	
 	var target = dir
-	if is_dodging == true:
+	if is_dodging:
 		target *= MAX_SPEED_DODGE
+	elif is_attacking:
+		target *= MAX_SPEED_ATTACK
 	else:
 		target *= MAX_SPEED
 	
 	var accel
 	if dir.dot(hvel) > 0:
-		if is_dodging == true:
+		if is_dodging:
 			accel = DODGE_ACCEL
 		else:
 			accel = ACCEL
@@ -206,7 +224,12 @@ func process_movement(delta):
 	vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	if dir.length_squared() > 0.01:
-		mesh_Node.rotation.y = lerp_angle(mesh_Node.rotation.y, atan2(dir.x,dir.z), delta * ANGULAR_ACCELERATION)
+		var angular_acceleration
+		if is_attacking:
+			angular_acceleration = ANGULAR_ACCELERATION_ATTACK
+		else:
+			angular_acceleration = ANGULAR_ACCELERATION
+		mesh_Node.rotation.y = lerp_angle(mesh_Node.rotation.y, atan2(dir.x,dir.z), delta * angular_acceleration)
 	
 	if hvel.length_squared() > MIN_SPEED_ANIMATION:
 		set_anim("Walking")
@@ -280,7 +303,7 @@ func process_respawn(delta):
 			time_respawn = TIMER_RESPAWN
 			health_tic_time = 0
 			health_time_no_damage = 0
-			transform.origin = Vector3(0, 0, 0)
+			global_transform = Server.player_spawn_point.get_next_position(Server.teamMode)
 			rpc_id(1, "revive_player")
 		else:
 			time_respawn -= delta
@@ -288,12 +311,16 @@ func process_respawn(delta):
 sync func kill_player():
 	hide()
 	body_collision.disabled = true
+	if is_network_master() and pass_camera_thing:
+		camera_node.set_follow_point(get_parent().get_node(str(last_damager_id)))
 			
 sync func revive_player():
 	is_dead = false
 	health = MAX_HEALTH
 	health_bar.init_health(health)
 	show()
+	if is_network_master() and pass_camera_thing:
+		camera_node.set_follow_point($CameraPoint)
 	body_collision.disabled = false
 #---------------------------------------------------
 #### DODGING ####

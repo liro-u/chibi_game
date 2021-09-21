@@ -7,6 +7,7 @@ var max_players = 2
 var players_id = []
 var players = {}
 
+var teamMode = "team"
 var PLAYER = preload("res://asset/charact/player.tscn")
 var world
 
@@ -43,21 +44,27 @@ func erase_player_info(id):
 	rpc("update_waiting_room")
 
 func make_team():
-	var players_in_team = 0
-	var players_with_team = 0
-	var team
-	for player_id in players_id:
-		if players_with_team - players_in_team < max_players/2 and players_in_team < max_players/2:
-			team = randi() % 2
-			if team == 0:
-				players_in_team += 1
-		elif players_in_team == max_players/2:
-			team = 1
-		else:
-			team = 0
-				
-		players_with_team += 1
-		players[player_id]["team"] = team
+	if teamMode == "team":
+		var players_in_team = 0
+		var players_with_team = 0
+		var team
+		for player_id in players_id:
+			if players_with_team - players_in_team < max_players/2 and players_in_team < max_players/2:
+				team = randi() % 2
+				if team == 0:
+					players_in_team += 1
+			elif players_in_team == max_players/2:
+				team = 1
+			else:
+				team = 0
+					
+			players_with_team += 1
+			players[player_id]["team"] = team
+	else:
+		var num_team = 0
+		for player_id in players_id:
+			players[player_id]["team"] = num_team
+			num_team += 1
 	print("Team assigned to all players")
 
 func reset_player_stat_game():
@@ -68,6 +75,7 @@ func reset_player_stat_game():
 	
 func load_world():
 	if players.size() == max_players:
+		rset("teamMode", teamMode)
 		make_team()
 		reset_player_stat_game()
 		rpc("load_world")

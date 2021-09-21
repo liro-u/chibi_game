@@ -13,6 +13,11 @@ var exception_colision = []
 
 export var TIMER_RELOAD_ATTACK = 0.2
 var timer_reload_attack = TIMER_RELOAD_ATTACK
+
+export var AMMO_ATTACK = 15
+var ammo_attack = AMMO_ATTACK
+export var RELOAD_AMMO_TIME = 3
+var reload_ammo_timer = RELOAD_AMMO_TIME
 #--------------------------------------------------
 
 func _ready():
@@ -25,19 +30,33 @@ func _ready():
 func process_attacking(delta):
 	if last_attack_is_shoot == true:
 		if can_attack == false:
-			if timer_reload_attack <= 0:
-				timer_reload_attack = TIMER_RELOAD_ATTACK
-				can_attack = true
+			if ammo_attack > 0:
+				if timer_reload_attack <= 0:
+					timer_reload_attack = TIMER_RELOAD_ATTACK
+					can_attack = true
+				else:
+					timer_reload_attack -= delta
 			else:
-				timer_reload_attack -= delta
-			
+				if reload_ammo_timer <= 0:
+					reload_ammo_timer = RELOAD_AMMO_TIME
+					ammo_attack = AMMO_ATTACK
+				else:
+					reload_ammo_timer -= delta
+					
 sync func make_attack():
 	last_attack_is_shoot = true
+	ammo_attack -= 1
 	var projectile = bronya_projectile.instance()
 	var scene_player_projectile = Server.world.get_node("PlayersWeapon")
 	scene_player_projectile.add_child(projectile)
 	
 	projectile.exception = exception_colision
 	projectile.player_property_id = int(name)
-	projectile.global_transform = projectile_point.global_transform
+	var target_node = $target_view.refresh_current_target_player()
+	if target_node != null:
+		projectile.look_at_from_position(projectile_point.global_transform.origin, target_node.global_transform.origin, Vector3(0, 1, 0))
+		projectile.rotate_y(PI)
+	else:
+		projectile.global_transform = projectile_point.global_transform
 #-----------------------------------------------------
+

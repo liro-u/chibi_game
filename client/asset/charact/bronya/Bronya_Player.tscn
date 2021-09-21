@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://asset/charact/bronya/Bronya_mesh.tscn" type="PackedScene" id=1]
 [ext_resource path="res://asset/charact/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://asset/charact/bronya/Bronya_Player.gd" type="Script" id=3]
+[ext_resource path="res://asset/target_system/target_view.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -26,5 +27,8 @@ parameters/playback = SubResource( 1 )
 
 [node name="info_player" parent="." index="4"]
 texture = SubResource( 2 )
+
+[node name="target_view" parent="." index="5" instance=ExtResource( 4 )]
+max_angle_target = 40.0
 
 [editable path="Bronya"]

@@ -1,14 +1,17 @@
 extends Node
 
 const SAVEGAME = "user://Savegame.json"
-var new_value_added = true
+var reset_data = true
 
 var save_data = {}
 
 func _ready():
 	var file = File.new()
 	
-	if not file.file_exists(SAVEGAME) or new_value_added == true:
+	if reset_data:
+		print("WARNING : reset data is activate in node : " + name)
+		
+	if not file.file_exists(SAVEGAME) or reset_data:
 		save_data = {"Player_name":"Unamed", "Last_charact":"res://asset/charact/bronya/Bronya_Player.tscn"}
 		save_game()
 	file.open(SAVEGAME, File.READ)

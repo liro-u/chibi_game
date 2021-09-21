@@ -44,13 +44,13 @@ start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=10]
 
-[sub_resource type="ViewportTexture" id=14]
+[sub_resource type="ViewportTexture" id=11]
 viewport_path = NodePath("info_player/Viewport")
 
-[sub_resource type="Curve" id=13]
+[sub_resource type="Curve" id=12]
 _data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="Curve" id=12]
+[sub_resource type="Curve" id=13]
 _data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Player" type="KinematicBody"]
@@ -71,12 +71,12 @@ __meta__ = {
 }
 
 [node name="CameraPoint" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.24126, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.241, 0 )
 
 [node name="info_player" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
 billboard = 1
-texture = SubResource( 14 )
+texture = SubResource( 11 )
 
 [node name="Viewport" type="Viewport" parent="info_player"]
 size = Vector2( 150, 29 )
@@ -120,10 +120,10 @@ nine_patch_stretch = true
 
 [node name="valueTween" type="Tween" parent="info_player/Viewport/healthBar"]
 script = ExtResource( 4 )
-curve = SubResource( 13 )
+curve = SubResource( 12 )
 
 [node name="alphaTween" type="Tween" parent="info_player/Viewport/healthBar"]
 script = ExtResource( 4 )
-curve = SubResource( 12 )
+curve = SubResource( 13 )
 [connection signal="curve_tween" from="info_player/Viewport/healthBar/valueTween" to="info_player/Viewport/healthBar" method="_on_valueTween_curve_tween"]
 [connection signal="curve_tween" from="info_player/Viewport/healthBar/alphaTween" to="info_player/Viewport/healthBar" method="_on_alphaTween2_curve_tween"]
