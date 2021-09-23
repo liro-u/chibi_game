@@ -14,6 +14,8 @@ sync var player_data = {}
 sync var teamMode
 var world
 var player_spawn_point
+sync var game_time
+sync var game_has_start = false
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -51,26 +53,34 @@ func register_player():
 sync func update_waiting_room():
 	get_tree().call_group("WaitingRoom", "refresh_players", players)
 	
-sync func load_world():
-	world = preload("res://asset/world/TestingArea/TestingArea.tscn").instance()
+sync func load_world(world_path):
+	world = load(world_path).instance()
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().get_node("Lobby").queue_free()
 	
 	rpc_id(1, "spawn_players", Server.local_player_id)
 
 sync func spawn_player(id):
-	var charact = Server.players[id]["Last_charact"]
+	var charact = choosePlayer(int(Server.players[id]["Last_charact"]))
 	var player_charact = load(charact)
 	var player = player_charact.instance()
 	player.name = str(id)
 	player.add_to_group("team_" + str(Server.players[id]["team"]))
 	player_spawn_point = world.get_node("PlayerSpawn")
 	player.global_transform = player_spawn_point.get_next_position(teamMode)
-	world.get_node("Players").add_child(player)
+	var players_node = world.get_node("Players")
+	players_node.add_child(player)
 	if id == local_player_id:
 		world.get_node("debug_UI").set_player(player)
 		world.get_node("CamRoot").set_follow_point(player.get_node("CameraPoint"))
 	player.set_network_master(id)
+	if players_node.get_child_count() >= players.size():
+		rpc_id(1, "start_game")
 	
-	
+func choosePlayer(index):
+	match index:
+		0:
+			return "res://asset/charact/bronya/Bronya_Player.tscn"
+		_:
+			print("WARNING : too big value on node : " + name)
 	

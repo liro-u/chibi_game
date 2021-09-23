@@ -46,6 +46,9 @@ func _physics_process(delta):
 	$score_board/death.text = "Death : " + str(Server.players[int(player_Node.name)]["death"])
 	$score_board/kill.text = "Kill : " + str(Server.players[int(player_Node.name)]["kill"])
 	
+	$shield/shield_on.text = "Shield is on : " + str(player_Node.shield_on)
+	$shield/time_shield.text = "Shield life timer : " + str(stepify(player_Node.shield_respawn_time, 0.1))
+	
 func process_input(delta):
 	key_pressed = ""
 	if Input.is_action_pressed("movement_forward"):

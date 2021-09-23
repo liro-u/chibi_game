@@ -7,15 +7,19 @@ var max_players = 2
 var players_id = []
 var players = {}
 
-var teamMode = "team"
+var teamMode = true
 var PLAYER = preload("res://asset/charact/player.tscn")
 var world
+var world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+var game_time
+var player_ready = 0
+var game_has_start = false
 
 func _ready():
 	randomize()
-	start_server()
 	
 func start_server():
+	$CenterContainer.hide()
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
 	network.connect("peer_connected", self, "_player_connected")
@@ -44,7 +48,7 @@ func erase_player_info(id):
 	rpc("update_waiting_room")
 
 func make_team():
-	if teamMode == "team":
+	if teamMode:
 		var players_in_team = 0
 		var players_with_team = 0
 		var team
@@ -78,8 +82,8 @@ func load_world():
 		rset("teamMode", teamMode)
 		make_team()
 		reset_player_stat_game()
-		rpc("load_world")
-		world = preload("res://asset/world/TestingArea/TestingArea.tscn").instance()
+		rpc("load_world", world_path)
+		world = load(world_path).instance()
 		get_tree().get_root().add_child(world)
 
 remote func spawn_players(id):
@@ -94,3 +98,40 @@ func update_player_stat(death_id, killer_id):
 	if killer_id != null:
 		players[killer_id]["kill"] += 1
 	rset("players", players)
+
+
+func _on_team_mode_button_toggled(button_pressed):
+	teamMode = button_pressed
+
+
+func _on_max_player_button_text_entered(new_text):
+	if int(new_text) > 0:
+		max_players = int(new_text)
+	else:
+		$CenterContainer/VBoxContainer/GridContainer/max_player_button.text = str(max_players)
+
+
+func _on_world_button_item_selected(index):
+	match index:
+		0:
+			world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+
+remote func start_game():
+	player_ready += 1
+	if players.size() <= player_ready:
+		game_has_start = true
+		rset("game_has_start", game_has_start)
+
+func _physics_process(delta):
+	if game_has_start:
+		process_time(delta)
+
+func set_game_time(time):
+	game_time = time
+	rset("game_time", game_time)
+	
+func process_time(delta):
+	if game_time <= 0:
+		rset("game_time", game_time)
+	else:
+		game_time -= delta

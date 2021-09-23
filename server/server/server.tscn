@@ -4,3 +4,94 @@
 
 [node name="Server" type="Node"]
 script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.286275, 0.2, 0.341176, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 408.0
+margin_top = 233.0
+margin_right = 616.0
+margin_bottom = 367.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 208.0
+margin_bottom = 14.0
+text = "Set up server"
+align = 1
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 208.0
+margin_bottom = 110.0
+columns = 2
+
+[node name="team_mode_label" type="Label" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_top = 13.0
+margin_right = 120.0
+margin_bottom = 27.0
+text = "team mode : "
+
+[node name="team_mode_button" type="CheckButton" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_left = 124.0
+margin_right = 208.0
+margin_bottom = 40.0
+pressed = true
+
+[node name="max_player_label" type="Label" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_top = 49.0
+margin_right = 120.0
+margin_bottom = 63.0
+text = "maximum player : "
+
+[node name="max_player_button" type="LineEdit" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_left = 124.0
+margin_top = 44.0
+margin_right = 208.0
+margin_bottom = 68.0
+text = "2"
+align = 1
+max_length = 2
+
+[node name="world_label" type="Label" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_top = 75.0
+margin_right = 120.0
+margin_bottom = 89.0
+text = "world : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="world_button" type="OptionButton" parent="CenterContainer/VBoxContainer/GridContainer"]
+margin_left = 124.0
+margin_top = 72.0
+margin_right = 208.0
+margin_bottom = 92.0
+text = "dev map"
+items = [ "dev map", null, false, 0, null ]
+selected = 0
+
+[node name="start_server_button" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 114.0
+margin_right = 208.0
+margin_bottom = 134.0
+text = "start server"
+[connection signal="toggled" from="CenterContainer/VBoxContainer/GridContainer/team_mode_button" to="." method="_on_team_mode_button_toggled"]
+[connection signal="text_entered" from="CenterContainer/VBoxContainer/GridContainer/max_player_button" to="." method="_on_max_player_button_text_entered"]
+[connection signal="item_selected" from="CenterContainer/VBoxContainer/GridContainer/world_button" to="." method="_on_world_button_item_selected"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/start_server_button" to="." method="start_server"]

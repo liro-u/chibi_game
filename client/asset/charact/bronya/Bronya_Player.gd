@@ -43,6 +43,11 @@ func process_attacking(delta):
 				else:
 					reload_ammo_timer -= delta
 					
+func reload_basic_attack():
+	ammo_attack = AMMO_ATTACK
+	reload_ammo_timer = RELOAD_AMMO_TIME
+	timer_reload_attack = TIMER_RELOAD_ATTACK
+
 sync func make_attack():
 	last_attack_is_shoot = true
 	ammo_attack -= 1
@@ -54,7 +59,10 @@ sync func make_attack():
 	projectile.player_property_id = int(name)
 	var target_node = $target_view.refresh_current_target_player()
 	if target_node != null:
-		projectile.look_at_from_position(projectile_point.global_transform.origin, target_node.global_transform.origin, Vector3(0, 1, 0))
+		var target_point = target_node.global_transform.origin
+		var projectile_point_coord = projectile_point.global_transform.origin
+		target_point.y = projectile_point_coord.y
+		projectile.look_at_from_position(projectile_point_coord, target_point, Vector3(0, 1, 0))
 		projectile.rotate_y(PI)
 	else:
 		projectile.global_transform = projectile_point.global_transform

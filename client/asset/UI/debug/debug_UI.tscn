@@ -238,3 +238,33 @@ text = "death :"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="shield" type="Control" parent="."]
+margin_left = 3.5
+margin_top = 105.5
+margin_right = 43.5
+margin_bottom = 145.5
+rect_scale = Vector2( 0.996015, 1.17294 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shield_on" type="Label" parent="shield"]
+margin_left = 31.113
+margin_top = 270.0
+margin_right = 103.113
+margin_bottom = 284.0
+text = "shield is on :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time_shield" type="Label" parent="shield"]
+margin_left = 32.527
+margin_top = 286.0
+margin_right = 161.527
+margin_bottom = 300.0
+text = "timer shield active :"
+__meta__ = {
+"_edit_use_anchors_": false
+}

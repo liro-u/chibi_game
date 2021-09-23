@@ -11,11 +11,12 @@ func _ready():
 		followPoint_node.get_parent().camera_node = self
 		
 func set_follow_point(node):
-	followPoint_node = node
-	followPoint_nodePath = node.get_path()
-	if "camera_node" in followPoint_node.get_parent():
-		followPoint_node.get_parent().camera_node = self
-	set_physics_process(true)
+	if node != null:
+		followPoint_node = node
+		followPoint_nodePath = node.get_path()
+		if "camera_node" in followPoint_node.get_parent():
+			followPoint_node.get_parent().camera_node = self
+		set_physics_process(true)
 	
 func _physics_process(delta):
 	transform.origin = followPoint_node.get_global_transform().origin

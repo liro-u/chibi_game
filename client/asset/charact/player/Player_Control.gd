@@ -14,6 +14,9 @@ var body_collision
 export(NodePath) var health_bar_path
 var health_bar
 
+export(NodePath) var shield_mesh_path
+var shield_mesh
+
 var camera_node
 #-----------------------------------------------
 
@@ -84,18 +87,27 @@ var dodge_reload_amount = 1
 #------------------------------------------------
 
 #----------------------------------------------
+# Shield respawn
+var shield_on = true
+
+export var SHIELD_SPEED_ROTATE = 2
+
+export var SHIELD_RESPAWN_TIMER = 3
+var shield_respawn_time = SHIELD_RESPAWN_TIMER
+#----------------------------------------------
+
+#----------------------------------------------
 # Debug
-var pass_camera_thing = true
+
 #-----------------------------------------------
 func _ready():
-	if pass_camera_thing:
-		print("WARNING : have to work on the killcam system")
 	if gravity_on == false:
 		print("WARNING : gravity is off")
 		
 	animationTree = get_node(animationTree_Path)
 	body_collision = get_node(body_collision_path)
 	health_bar = get_node(health_bar_path)
+	shield_mesh = get_node(shield_mesh_path)
 	
 	if mesh_Path == "":
 		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
@@ -117,18 +129,20 @@ func error_msg(msg):
 	print("WARNING : " + msg)
 	
 func _physics_process(delta):
-	if is_network_master():
-		process_input(delta)
-	
-		if health > 0:
-			process_movement(delta)
-			process_attacking(delta)
-			process_dodging(delta)
-			process_health(delta)
-		else:
-			process_respawn(delta)
+	if Server.game_has_start:
+		process_shield(delta)
+		if is_network_master():
+			process_input(delta)
 		
-		rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
+			if health > 0:
+				process_movement(delta)
+				process_attacking(delta)
+				process_dodging(delta)
+				process_health(delta)
+			else:
+				process_respawn(delta)
+			
+			rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
 		
 remote func update_player(update_translation, mesh_rotation):
 	if not is_network_master():
@@ -272,6 +286,9 @@ sync func add_health(additional_health):
 
 #-------------------------------------------------------
 #### ATTACKING ####
+func reload_basic_attack():
+	print("WARNING : you need to code the reload_basic attack system when you respawn")
+
 func process_attacking(delta):
 	print("WARNING : you need to code the reload attack system")
 		
@@ -281,10 +298,11 @@ sync func make_attack():
 #### TAKE DAMAGE ####
 func take_damage(damage, last_damage_id = null):
 	if is_network_master():
-		health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
-		health_tic_time = 0
-		last_damager_id = last_damage_id
-		rpc_id(1, "remove_health", damage)
+		if not shield_on:
+			health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
+			health_tic_time = 0
+			last_damager_id = last_damage_id
+			rpc_id(1, "remove_health", damage)
 	
 
 sync func remove_health(damage):
@@ -300,7 +318,13 @@ func process_respawn(delta):
 		is_dead = true
 	if is_dead == true:
 		if time_respawn <= 0:
+			reload_basic_attack()
+			is_attacking = false
+			can_attack = true
 			time_respawn = TIMER_RESPAWN
+			vel = Vector3.ZERO
+			dodge_reload_timer = DODGE_RELOAD_TIMER
+			dodge = MAX_DODGE
 			health_tic_time = 0
 			health_time_no_damage = 0
 			global_transform = Server.player_spawn_point.get_next_position(Server.teamMode)
@@ -311,16 +335,14 @@ func process_respawn(delta):
 sync func kill_player():
 	hide()
 	body_collision.disabled = true
-	if is_network_master() and pass_camera_thing:
-		camera_node.set_follow_point(get_parent().get_node(str(last_damager_id)))
-			
+
 sync func revive_player():
 	is_dead = false
 	health = MAX_HEALTH
+	shield_on = true
+	shield_mesh.show()
 	health_bar.init_health(health)
 	show()
-	if is_network_master() and pass_camera_thing:
-		camera_node.set_follow_point($CameraPoint)
 	body_collision.disabled = false
 #---------------------------------------------------
 #### DODGING ####
@@ -334,3 +356,15 @@ func process_dodging(delta):
 			dodge = min(dodge, MAX_DODGE)
 		else:
 			dodge_reload_timer -= delta
+
+#-----------------------------------------------------
+#### SHIELD ####
+func process_shield(delta):
+	if shield_on:
+		if shield_respawn_time <= 0:
+			shield_respawn_time = SHIELD_RESPAWN_TIMER
+			shield_on = false
+			shield_mesh.hide()
+		else:
+			shield_respawn_time -= delta
+			shield_mesh.rotate_y(SHIELD_SPEED_ROTATE * delta)
