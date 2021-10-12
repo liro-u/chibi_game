@@ -2,7 +2,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var port = 3234
-var max_players = 2
+var max_players = 1
 
 var players_id = []
 var players = {}
@@ -10,10 +10,11 @@ var players = {}
 var teamMode = true
 var PLAYER = preload("res://asset/charact/player.tscn")
 var world
-var world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+var world_name = "dev_world"
 var game_time
 var player_ready = 0
 var game_has_start = false
+var mode = "mme"
 
 func _ready():
 	randomize()
@@ -33,13 +34,22 @@ func _player_connected(player_id):
 func _player_disconnected(player_id):
 	print("Player: " + str(player_id) + " Disconnected")
 	erase_player_info(player_id)
+
+remote func leave_server(id):
+	rpc_id(id, "leave_server")
+	get_tree().network_peer.disconnect_peer(id)
 	
 remote func send_player_info(id, player_data):
 	players_id.append(id)
 	players[id] = player_data
 	rset("players", players)
 	rpc("update_waiting_room")
-	load_world()
+	try_to_load_world()
+	
+remote func try_to_load_world():
+	player_ready += 1
+	if player_ready == max_players:
+		load_world()
 	
 func erase_player_info(id):
 	players_id.erase(id)
@@ -78,13 +88,18 @@ func reset_player_stat_game():
 	rset("players", players) 
 	
 func load_world():
-	if players.size() == max_players:
-		rset("teamMode", teamMode)
-		make_team()
-		reset_player_stat_game()
-		rpc("load_world", world_path)
-		world = load(world_path).instance()
-		get_tree().get_root().add_child(world)
+	player_ready = 0
+	rset("teamMode", teamMode)
+	rset("mode", mode)
+	make_team()
+	reset_player_stat_game()
+	rpc("start_load_world", world_name)
+	var world_path
+	match world_name:
+		"dev_world":
+			world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+	world = load(world_path).instance()
+	get_tree().get_root().add_child(world)
 
 remote func spawn_players(id):
 	var player = PLAYER.instance()
@@ -97,11 +112,8 @@ func update_player_stat(death_id, killer_id):
 	players[death_id]["death"] += 1
 	if killer_id != null:
 		players[killer_id]["kill"] += 1
-	rset("players", players)
+	rpc("update_player_score", players, death_id, killer_id)
 
-
-func _on_team_mode_button_toggled(button_pressed):
-	teamMode = button_pressed
 
 
 func _on_max_player_button_text_entered(new_text):
@@ -114,13 +126,13 @@ func _on_max_player_button_text_entered(new_text):
 func _on_world_button_item_selected(index):
 	match index:
 		0:
-			world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+			world_name = "dev_world" 
 
 remote func start_game():
 	player_ready += 1
 	if players.size() <= player_ready:
 		game_has_start = true
-		rset("game_has_start", game_has_start)
+		rpc("start_game")
 
 func _physics_process(delta):
 	if game_has_start:
@@ -132,6 +144,23 @@ func set_game_time(time):
 	
 func process_time(delta):
 	if game_time <= 0:
-		rset("game_time", game_time)
+		rpc("end_of_game")
+		end_of_game()
 	else:
 		game_time -= delta
+
+func end_of_game():
+	game_has_start = false
+	player_ready = 0
+	world.queue_free()
+
+func _on_mode_button_item_selected(index):
+	match index:
+		#mme
+		0:
+			teamMode = true
+			mode = "mme"
+		#mg
+		1:
+			teamMode = false
+			mode = "mg"

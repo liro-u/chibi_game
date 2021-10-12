@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://asset/UI/end_screen/team_stat/team_pannel_stat.gd" type="Script" id=1]
+
+[node name="team_pannel_stat" type="ColorRect"]
+margin_right = 944.0
+margin_bottom = 520.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.137255, 0.137255, 0.137255, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+player_stat_list_path = NodePath("MarginContainer/ScrollContainer/player_stat_list")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 934.0
+margin_bottom = 510.0
+
+[node name="player_stat_list" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+margin_right = 924.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}

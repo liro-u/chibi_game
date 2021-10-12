@@ -18,6 +18,8 @@ export(NodePath) var shield_mesh_path
 var shield_mesh
 
 var camera_node
+
+var game_ui
 #-----------------------------------------------
 
 #-----------------------------------------------
@@ -57,6 +59,9 @@ var time_respawn = TIMER_RESPAWN
 var is_dead = false
 
 var last_damager_id
+
+signal update_health_bar(health)
+signal init_health_bar(health)
 #--------------------------------------------------
 
 #-------------------------------------------------
@@ -109,6 +114,8 @@ func _ready():
 	health_bar = get_node(health_bar_path)
 	shield_mesh = get_node(shield_mesh_path)
 	
+	health_bar.set_property_node(self)
+	
 	if mesh_Path == "":
 		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
 	elif animationTree.active == false or animationTree.anim_player == "":
@@ -121,8 +128,7 @@ func _ready():
 	label_player_name.hide()
 	label_player_name.show()
 	$info_player.scale = Vector3(2, 2, 2)
-	
-	health_bar.init_health(health)
+
 	
 func error_msg(msg):
 	set_physics_process(false)
@@ -282,7 +288,7 @@ func process_health(delta):
 sync func add_health(additional_health):
 	health += additional_health
 	health = min(health, MAX_HEALTH)
-	health_bar.init_health(health)
+	emit_signal("init_health_bar", health)
 
 #-------------------------------------------------------
 #### ATTACKING ####
@@ -298,7 +304,7 @@ sync func make_attack():
 #### TAKE DAMAGE ####
 func take_damage(damage, last_damage_id = null):
 	if is_network_master():
-		if not shield_on:
+		if not shield_on and health > 0:
 			health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
 			health_tic_time = 0
 			last_damager_id = last_damage_id
@@ -308,7 +314,7 @@ func take_damage(damage, last_damage_id = null):
 sync func remove_health(damage):
 	health -= damage
 	health = max(health, 0)
-	health_bar.update_health(health)
+	emit_signal("update_health_bar", health)
 #----------------------------------------------------------
 #### RESPAWN ####
 
@@ -341,7 +347,7 @@ sync func revive_player():
 	health = MAX_HEALTH
 	shield_on = true
 	shield_mesh.show()
-	health_bar.init_health(health)
+	emit_signal("init_health_bar", health)
 	show()
 	body_collision.disabled = false
 #---------------------------------------------------

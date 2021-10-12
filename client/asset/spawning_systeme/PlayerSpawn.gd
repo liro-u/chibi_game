@@ -7,3 +7,4 @@ func get_next_position(mode):
 	else:
 		player_spawn_pos = get_node("SoloTeam_SpawnPoint").get_next_position()
 	return player_spawn_pos
+	

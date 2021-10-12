@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://asset/UI/game_ui/scorebar/scorebar.gd" type="Script" id=1]
+[ext_resource path="res://asset/UI/game_ui/scorebar/texture/progressbar.png" type="Texture" id=2]
+[ext_resource path="res://asset/UI/game_ui/scorebar/texture/under.png" type="Texture" id=3]
+[ext_resource path="res://asset/font/kenyan coffee rg.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 13
+font_data = ExtResource( 4 )
+
+[node name="scoreBar" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 14 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+bar_node_path = NodePath("bar")
+label_node_path = NodePath("Label")
+size_bar = Vector2( 150, 14 )
+color = Color( 0.223529, 0.854902, 0.984314, 1 )
+font = SubResource( 1 )
+
+[node name="bar" type="TextureProgress" parent="."]
+margin_right = 300.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 300, 14 )
+max_value = 75.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+tint_progress = Color( 0.223529, 0.854902, 0.984314, 1 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 304.0
+margin_top = 12.0
+margin_right = 322.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 1 )
+text = "0/75"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

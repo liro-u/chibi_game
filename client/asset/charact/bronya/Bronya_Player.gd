@@ -24,6 +24,7 @@ func _ready():
 	projectile_point = get_node(projectile_point_path)
 	
 	exception_colision.append(self)
+	
 
 #-----------------------------------------------
 #### ATTACK ####

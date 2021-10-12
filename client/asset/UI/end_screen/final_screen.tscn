@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://asset/font/kenyan coffee rg.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://asset/UI/end_screen/final_screen.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 25
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
+
+[node name="final_screen" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 2 )
+color = Color( 0.113725, 0.113725, 0.243137, 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+team_list_node_path = NodePath("CenterContainer/VBoxContainer/team_list")
+
+[node name="CenterContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 40
+custom_constants/margin_top = 40
+custom_constants/margin_left = 40
+custom_constants/margin_bottom = 40
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 984.0
+margin_bottom = 560.0
+custom_constants/separation = 20
+
+[node name="team_list" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_right = 944.0
+margin_bottom = 463.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 483.0
+margin_right = 944.0
+margin_bottom = 520.0
+custom_constants/separation = 10
+alignment = 2
+
+[node name="back" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 707.0
+margin_right = 820.0
+margin_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Back to menu"
+
+[node name="restart" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 830.0
+margin_right = 944.0
+margin_bottom = 37.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Restart game"
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/restart" to="." method="_on_restart_pressed"]

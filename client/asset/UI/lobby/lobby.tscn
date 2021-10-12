@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://asset/UI/lobby/lobby.gd" type="Script" id=1]
-[ext_resource path="res://asset/UI/lobby/waiting_room.tscn" type="PackedScene" id=2]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -13,7 +12,6 @@ __meta__ = {
 player_name_path = NodePath("CenterContainer/VBoxContainer/GridContainer/NameTextBox")
 selected_IP_path = NodePath("CenterContainer/VBoxContainer/GridContainer/IPTextBox")
 selected_port_path = NodePath("CenterContainer/VBoxContainer/GridContainer/PortTextBox")
-waiting_room_path = NodePath("WaitingRoom")
 charact_button_path = NodePath("CenterContainer/VBoxContainer/GridContainer/charact_button")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -119,8 +117,6 @@ margin_top = 181.0
 margin_right = 338.0
 margin_bottom = 201.0
 text = "Join game"
-
-[node name="WaitingRoom" parent="." instance=ExtResource( 2 )]
 [connection signal="text_changed" from="CenterContainer/VBoxContainer/GridContainer/NameTextBox" to="." method="_on_NameTextBox_text_changed"]
 [connection signal="item_selected" from="CenterContainer/VBoxContainer/GridContainer/charact_button" to="." method="_on_charact_button_item_selected"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/JoinBtn" to="." method="_on_JoinBtn_pressed"]

@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://asset/charact/player/lifebar/healthBar.gd" type="Script" id=1]
+[ext_resource path="res://asset/class/CurveTween.gd" type="Script" id=2]
+[ext_resource path="res://asset/charact/player/lifebar/texture/under.png" type="Texture" id=3]
+[ext_resource path="res://asset/charact/player/lifebar/texture/progressbar.png" type="Texture" id=4]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[node name="healthBar" type="CenterContainer"]
+margin_right = 151.0
+margin_bottom = 14.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+health_bar_under_path = NodePath("health_bar_under")
+health_bar_over_path = NodePath("health_bar_over")
+value_tween_path = NodePath("valueTween")
+alpha_tween_path = NodePath("alphaTween")
+color_friend = Color( 0.223529, 0.854902, 0.984314, 1 )
+color_enemi = Color( 0.929412, 0.117647, 0.117647, 1 )
+
+[node name="health_bar_under" type="TextureProgress" parent="."]
+margin_right = 150.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 150, 14 )
+value = 75.0
+texture_progress = ExtResource( 4 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health_bar_over" type="TextureProgress" parent="."]
+margin_right = 150.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 150, 14 )
+value = 50.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+tint_progress = Color( 0.223529, 0.854902, 0.984314, 1 )
+nine_patch_stretch = true
+
+[node name="valueTween" type="Tween" parent="."]
+script = ExtResource( 2 )
+curve = SubResource( 1 )
+
+[node name="alphaTween" type="Tween" parent="."]
+script = ExtResource( 2 )
+curve = SubResource( 2 )
+[connection signal="curve_tween" from="valueTween" to="." method="_on_valueTween_curve_tween"]
+[connection signal="curve_tween" from="alphaTween" to="." method="_on_alphaTween2_curve_tween"]
