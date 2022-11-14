@@ -7,10 +7,28 @@ var animationTree
 
 export(NodePath) var mesh_Path
 var mesh_Node
+
+export(NodePath) var body_collision_path
+var body_collision
+
+export(NodePath) var health_bar_path
+var health_bar
+
+export(NodePath) var shield_mesh_path
+var shield_mesh
+
+export(NodePath) var audio_node_path
+var audio_node
+
+var camera_node
+
+var game_ui
 #-----------------------------------------------
 
 #-----------------------------------------------
 # Basic Movement
+export var gravity_on = true
+
 const GRAVITY = 9.8
 const MAX_SLOPE_ANGLE = 40
 
@@ -23,7 +41,7 @@ const MIN_SPEED_ANIMATION = 30
 
 var dir = Vector3()
 
-const ANGULAR_ACCELERATION = 7
+export var ANGULAR_ACCELERATION = 7
 #-------------------------------------------------
 
 #-------------------------------------------------
@@ -42,11 +60,22 @@ var health_tic_time = 0
 export var TIMER_RESPAWN = 3
 var time_respawn = TIMER_RESPAWN
 var is_dead = false
+
+var last_damager_id
+
+signal update_health_bar(health)
+signal init_health_bar(health)
 #--------------------------------------------------
 
 #-------------------------------------------------
 # Attacking
 var is_attacking = false
+
+var can_attack = true
+var last_attack_is_shoot = true
+
+export var MAX_SPEED_ATTACK = 5
+export var ANGULAR_ACCELERATION_ATTACK = 3
 #--------------------------------------------------
 
 #------------------------------------------------
@@ -65,39 +94,70 @@ var dodge_reload_timer = DODGE_RELOAD_TIMER
 var dodge_reload_amount = 1
 #------------------------------------------------
 
-func _ready():
-	animationTree = get_node(animationTree_Path)
+#----------------------------------------------
+# Shield respawn
+var shield_on = true
 
+export var SHIELD_SPEED_ROTATE = 2
+
+export var SHIELD_RESPAWN_TIMER = 3
+var shield_respawn_time = SHIELD_RESPAWN_TIMER
+#----------------------------------------------
+
+#----------------------------------------------
+# Debug
+
+#-----------------------------------------------
+func _ready():
+	if gravity_on == false:
+		print("WARNING : gravity is off")
+		
+	animationTree = get_node(animationTree_Path)
+	body_collision = get_node(body_collision_path)
+	health_bar = get_node(health_bar_path)
+	shield_mesh = get_node(shield_mesh_path)
+	audio_node = get_node(audio_node_path)
+	
+	health_bar.set_property_node(self)
+	
 	if mesh_Path == "":
-		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
+		error_msg("no mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
 	elif animationTree.active == false or animationTree.anim_player == "":
 		error_msg("link AnimationPlayer to " + animationTree.name + " and set it active" + " (path : " + animationTree.get_path() + ")")
 	else:
 		mesh_Node = get_node(mesh_Path)
 		
+	var label_player_name = $info_player/Viewport/Label_player_name
+	label_player_name.text = Server.players[int(name)]["Player_name"]
+	label_player_name.hide()
+	label_player_name.show()
+	$info_player.scale = Vector3(2, 2, 2)
+
+	
 func error_msg(msg):
 	set_physics_process(false)
 	print("WARNING : " + msg)
 	
 func _physics_process(delta):
-	if is_network_master():
-		process_input(delta)
-	
-		if health > 0:
-			process_movement(delta)
-			process_attacking(delta)
-			process_dodging(delta)
-			process_health(delta)
-		else:
-			process_respawn(delta)
-			
-		rpc_unreliable_id(1, "update_player", name, translation, mesh_Node.rotation.y)
+	if Server.game_has_start:
+		process_shield(delta)
+		if is_network_master():
+			process_input(delta)
 		
-remote func update_player(id, update_translation, mesh_rotation):
+			if health > 0:
+				process_movement(delta)
+				process_attacking(delta)
+				process_dodging(delta)
+				process_health(delta)
+			else:
+				process_respawn(delta)
+			
+			rpc_unreliable_id(1, "update_player", translation, mesh_Node.rotation.y)
+		
+remote func update_player(update_translation, mesh_rotation):
 	if not is_network_master():
-		if name == id:
-			translation = update_translation
-			mesh_Node.rotation.y = mesh_rotation
+		translation = update_translation
+		mesh_Node.rotation.y = mesh_rotation
 	
 func process_input(delta):
 	#----------------------------------------
@@ -129,14 +189,21 @@ func process_input(delta):
 				if dir != Vector3(0, 0, 0):
 					is_dodging = true
 					dodge -= 1
+					audio_node.play_sound("dodge")
 	#---------------------------------------------------
 	
 	#--------------------------------------------------
 	# Attack
-	if Input.is_action_pressed("attack"):
-		if is_attacking == false:
+	if not is_dead:
+		if Input.is_action_pressed("attack"):
+			if can_attack == true:
+				can_attack = false
+				last_attack_is_shoot = false
+				rpc_id(1, "make_attack")
+		if Input.is_action_just_pressed("attack"):
 			is_attacking = true
-			
+		if Input.is_action_just_released("attack"):
+			is_attacking = false
 	#--------------------------------------------------
 	
 	#---------------------------------------------
@@ -151,7 +218,7 @@ func process_movement(delta):
 	dir.y = 0
 	dir = dir.normalized()
 	
-	if is_on_floor():
+	if is_on_floor() or gravity_on == false:
 		vel.y = 0
 	else:
 		vel.y -= delta * GRAVITY
@@ -160,14 +227,16 @@ func process_movement(delta):
 	hvel.y = 0
 	
 	var target = dir
-	if is_dodging == true:
+	if is_dodging:
 		target *= MAX_SPEED_DODGE
+	elif is_attacking:
+		target *= MAX_SPEED_ATTACK
 	else:
 		target *= MAX_SPEED
 	
 	var accel
 	if dir.dot(hvel) > 0:
-		if is_dodging == true:
+		if is_dodging:
 			accel = DODGE_ACCEL
 		else:
 			accel = ACCEL
@@ -180,7 +249,12 @@ func process_movement(delta):
 	vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	if dir.length_squared() > 0.01:
-		mesh_Node.rotation.y = lerp_angle(mesh_Node.rotation.y, atan2(dir.x,dir.z), delta * ANGULAR_ACCELERATION)
+		var angular_acceleration
+		if is_attacking:
+			angular_acceleration = ANGULAR_ACCELERATION_ATTACK
+		else:
+			angular_acceleration = ANGULAR_ACCELERATION
+		mesh_Node.rotation.y = lerp_angle(mesh_Node.rotation.y, atan2(dir.x,dir.z), delta * angular_acceleration)
 	
 	if hvel.length_squared() > MIN_SPEED_ANIMATION:
 		set_anim("Walking")
@@ -192,12 +266,13 @@ func process_movement(delta):
 
 func set_anim(anim_name):
 	animationTree["parameters/playback"].travel(anim_name)
-	rpc_id(1, "update_player_anim", name, anim_name)
+	rpc_id(1, "update_player_anim", anim_name)
 
-remote func update_anim(id, anim_name):
+remote func update_anim(anim_name):
 	if not is_network_master():
-		if name == id:
-			animationTree["parameters/playback"].travel(anim_name)
+		animationTree["parameters/playback"].travel(anim_name)
+		if anim_name == "Dodge":
+			audio_node.play_sound("dodge")
 
 func anim_end(anim_name):
 	match anim_name:
@@ -210,60 +285,82 @@ func process_health(delta):
 	if health_time_no_damage <= 0:
 		if health != MAX_HEALTH:
 			if health_tic_time <= 0:
-				add_health(HEALTH_BY_TIC)
+				rpc_id(1, "add_health", HEALTH_BY_TIC)
 				health_tic_time = HEALTH_TIC_TIMER
 			else:
 				health_tic_time -= delta
 	else:
 		health_time_no_damage -= delta
 	
-func add_health(additional_health):
+sync func add_health(additional_health):
 	health += additional_health
 	health = min(health, MAX_HEALTH)
+	emit_signal("init_health_bar", health)
 
 #-------------------------------------------------------
 #### ATTACKING ####
+func reload_basic_attack():
+	print("WARNING : you need to code the reload_basic attack system when you respawn")
+
 func process_attacking(delta):
-	pass
-	
+	print("WARNING : you need to code the reload attack system")
+		
+sync func make_attack():
+	print("WARNING : you need to code this attack system")
 #-------------------------------------------------------
 #### TAKE DAMAGE ####
-func take_damage(damage):
-	health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
-	health_tic_time = 0
+func take_damage(damage, last_damage_id = null):
+	if is_network_master():
+		if not shield_on and health > 0:
+			health_time_no_damage = HEALTH_TIMER_NO_DAMAGE
+			health_tic_time = 0
+			last_damager_id = last_damage_id
+			rpc_id(1, "remove_health", damage)
+	
+
+sync func remove_health(damage):
 	health -= damage
 	health = max(health, 0)
-
+	emit_signal("update_health_bar", health)
 #----------------------------------------------------------
 #### RESPAWN ####
 
 func process_respawn(delta):
 	if is_dead == false:
-		hide()
-		rpc_id(1, "hide_player", name)
+		if last_damager_id == Server.local_player_id :
+			last_damager_id = null
+		rpc_id(1, "kill_player", int(name), last_damager_id)
 		is_dead = true
 	if is_dead == true:
 		if time_respawn <= 0:
+			reload_basic_attack()
+			is_attacking = false
+			can_attack = true
 			time_respawn = TIMER_RESPAWN
-			is_dead = false
-			health = MAX_HEALTH
+			vel = Vector3.ZERO
+			dodge_reload_timer = DODGE_RELOAD_TIMER
+			dodge = MAX_DODGE
 			health_tic_time = 0
 			health_time_no_damage = 0
-			transform.origin = Vector3(0, 0, 0)
-			show()
-			rpc_id(1, "show_player", name)
+			global_transform = Server.player_spawn_point.get_next_position(Server.teamMode)
+			rpc_id(1, "revive_player")
 		else:
 			time_respawn -= delta
 
-remote func hide_player(id):
-	if not is_network_master():
-		if id == name:
-			hide()
-			
-remote func show_player(id):
-	if not is_network_master():
-		if id == name:
-			show()
+sync func kill_player():
+	hide()
+	body_collision.disabled = true
+	audio_node.play_sound("die")
+
+sync func revive_player():
+	is_dead = false
+	health = MAX_HEALTH
+	shield_on = true
+	shield_mesh.show()
+	emit_signal("init_health_bar", health)
+	show()
+	body_collision.disabled = false
+	audio_node.play_sound("revive")
 #---------------------------------------------------
 #### DODGING ####
 
@@ -276,3 +373,15 @@ func process_dodging(delta):
 			dodge = min(dodge, MAX_DODGE)
 		else:
 			dodge_reload_timer -= delta
+
+#-----------------------------------------------------
+#### SHIELD ####
+func process_shield(delta):
+	if shield_on:
+		if shield_respawn_time <= 0:
+			shield_respawn_time = SHIELD_RESPAWN_TIMER
+			shield_on = false
+			shield_mesh.hide()
+		else:
+			shield_respawn_time -= delta
+			shield_mesh.rotate_y(SHIELD_SPEED_ROTATE * delta)

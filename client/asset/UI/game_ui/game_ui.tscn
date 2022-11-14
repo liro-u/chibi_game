@@ -1,0 +1,148 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://asset/charact/player/lifebar/healthBar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://asset/UI/game_ui/game_ui.gd" type="Script" id=2]
+[ext_resource path="res://asset/font/kenyan coffee rg.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://asset/UI/game_ui/texte_value/Texte_value.tscn" type="PackedScene" id=4]
+[ext_resource path="res://asset/UI/game_ui/scorebar/scorebar.tscn" type="PackedScene" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 25
+font_data = ExtResource( 3 )
+
+[node name="Game_UI" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 2 )
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+health_bar_node_path = NodePath("VBoxContainer/VBoxContainer/healthBar")
+kill_text_node_path = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/kill_texte")
+death_text_node_path = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/death_texte")
+time_count_node_path = NodePath("VBoxContainer/HBoxContainer/VBoxContainer3/HBoxContainer2/time_count")
+score_node_path = NodePath("VBoxContainer/HBoxContainer/VBoxContainer/scoreBar")
+enemy_score_node_path = NodePath("VBoxContainer/HBoxContainer/VBoxContainer/enemyscorebar")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 984.0
+margin_bottom = 41.0
+custom_constants/separation = 10
+alignment = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 321.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+margin_right = 321.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+
+[node name="time_count" parent="VBoxContainer/HBoxContainer/VBoxContainer3/HBoxContainer2" instance=ExtResource( 4 )]
+margin_bottom = 41.0
+rect_min_size = Vector2( 116, 41 )
+size_flags_vertical = 0
+text_zone_path = NodePath("../time_count/MarginContainer/Label")
+base_text = "Time : "
+start_value = "00:00"
+font = SubResource( 3 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 331.0
+margin_right = 652.0
+margin_bottom = 41.0
+custom_constants/separation = 7
+alignment = 1
+
+[node name="scoreBar" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 1.0
+margin_right = 321.0
+margin_bottom = 17.0
+max_score = 15
+
+[node name="enemyscorebar" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 24.0
+margin_right = 321.0
+max_score = 15
+color = Color( 0.929412, 0.117647, 0.117647, 1 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 662.0
+margin_right = 984.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 3.0
+margin_right = 322.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="kill_texte" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 183.0
+margin_right = 243.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 60, 35 )
+size_flags_vertical = 0
+base_text = "kill : "
+start_value = "0"
+
+[node name="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/kill_texte/MarginContainer" index="0"]
+margin_right = 47.0
+margin_bottom = 30.0
+text = "kill : 0"
+
+[node name="death_texte" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 247.0
+margin_right = 322.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 75, 35 )
+size_flags_vertical = 0
+base_text = "death : "
+start_value = "0"
+
+[node name="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/death_texte/MarginContainer" index="0"]
+margin_right = 62.0
+margin_bottom = 30.0
+text = "death : 0"
+
+[node name="HSeparator" type="VSplitContainer" parent="VBoxContainer"]
+margin_top = 45.0
+margin_right = 984.0
+margin_bottom = 542.0
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 546.0
+margin_right = 984.0
+margin_bottom = 560.0
+
+[node name="healthBar" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_right = 984.0
+size_bar = Vector2( 500, 14 )
+
+[editable path="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/kill_texte"]
+
+[editable path="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/death_texte"]

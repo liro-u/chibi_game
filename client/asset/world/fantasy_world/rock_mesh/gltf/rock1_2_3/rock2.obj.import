@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/rock2.obj-ded924280843d2c7ecd2ca706238b964.mesh"
+
+[deps]
+
+files=[ "res://.import/rock2.obj-ded924280843d2c7ecd2ca706238b964.mesh" ]
+
+source_file="res://asset/world/fantasy_world/rock_mesh/gltf/rock1_2_3/rock2.obj"
+dest_files=[ "res://.import/rock2.obj-ded924280843d2c7ecd2ca706238b964.mesh", "res://.import/rock2.obj-ded924280843d2c7ecd2ca706238b964.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

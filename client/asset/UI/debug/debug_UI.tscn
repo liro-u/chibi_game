@@ -2,152 +2,231 @@
 
 [ext_resource path="res://asset/UI/debug/debug_UI.gd" type="Script" id=1]
 
-[node name="debug_UI" type="Control"]
+[node name="debug_UI" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Label_Key" type="Label" parent="."]
-margin_left = 32.0
-margin_top = 8.0
-margin_right = 1056.0
-margin_bottom = 22.0
-text = "key pressed :"
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="movement" type="Control" parent="."]
-margin_top = 16.0
+[node name="list_node" type="VBoxContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
 margin_right = 1024.0
-margin_bottom = 16.0
+margin_bottom = 600.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label_Direction" type="Label" parent="movement"]
-margin_left = 31.0
-margin_top = 21.0
-margin_right = 148.0
-margin_bottom = 35.0
+[node name="movement" type="VBoxContainer" parent="list_node"]
+margin_right = 1004.0
+margin_bottom = 32.0
+
+[node name="Label_Direction" type="Label" parent="list_node/movement"]
+margin_right = 1004.0
+margin_bottom = 14.0
 text = "direction : (0, 0, 0)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_Velocity" type="Label" parent="movement"]
-margin_left = 31.0
-margin_top = 35.0
-margin_right = 148.0
-margin_bottom = 49.0
+[node name="Label_Velocity" type="Label" parent="list_node/movement"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
 text = "velocity : (0, 0, 0)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="health" type="Control" parent="."]
-margin_top = 51.0
-margin_right = 1024.0
-margin_bottom = 51.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="health" type="VBoxContainer" parent="list_node"]
+margin_top = 52.0
+margin_right = 1004.0
+margin_bottom = 102.0
 
-[node name="Label_Health" type="Label" parent="health"]
-margin_left = 31.0
-margin_top = 35.0
-margin_right = 107.0
-margin_bottom = 49.0
+[node name="Label_Health" type="Label" parent="list_node/health"]
+margin_right = 1004.0
+margin_bottom = 14.0
 text = "health : 100"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_Health_Tic" type="Label" parent="health"]
-margin_left = 32.0
-margin_top = 49.0
-margin_right = 128.0
-margin_bottom = 63.0
+[node name="Label_Health_Tic" type="Label" parent="list_node/health"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
 text = "health regene timer :"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_Health_no_damage" type="Label" parent="health"]
-margin_left = 32.0
-margin_top = 63.0
-margin_right = 128.0
-margin_bottom = 77.0
+[node name="Label_Health_no_damage" type="Label" parent="list_node/health"]
+margin_top = 36.0
+margin_right = 1004.0
+margin_bottom = 50.0
 text = "health no damage timer :"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="respawn" type="Control" parent="."]
-margin_top = 55.0
-margin_right = 1024.0
-margin_bottom = 55.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="respawn" type="VBoxContainer" parent="list_node"]
+margin_top = 122.0
+margin_right = 1004.0
+margin_bottom = 154.0
 
-[node name="Label_Respawn" type="Label" parent="respawn"]
-margin_left = 31.0
-margin_top = 104.0
-margin_right = 199.0
-margin_bottom = 118.0
+[node name="Label_Respawn" type="Label" parent="list_node/respawn"]
+margin_right = 1004.0
+margin_bottom = 14.0
 text = "Respawn time :"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_is_dead" type="Label" parent="respawn"]
-margin_left = 31.0
-margin_top = 118.0
-margin_right = 199.0
-margin_bottom = 132.0
+[node name="Label_is_dead" type="Label" parent="list_node/respawn"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
 text = "is dead :"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="dodge" type="Control" parent="."]
-margin_top = 59.0
-margin_right = 1024.0
-margin_bottom = 59.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="dodge" type="VBoxContainer" parent="list_node"]
+margin_top = 174.0
+margin_right = 1004.0
+margin_bottom = 224.0
 
-[node name="Label_is_Dodging" type="Label" parent="dodge"]
-margin_left = 31.0
-margin_top = 144.0
-margin_right = 148.0
-margin_bottom = 158.0
+[node name="Label_is_Dodging" type="Label" parent="list_node/dodge"]
+margin_right = 1004.0
+margin_bottom = 14.0
 text = "is dodging : "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_dodge" type="Label" parent="dodge"]
-margin_left = 31.0
-margin_top = 160.0
-margin_right = 148.0
-margin_bottom = 174.0
+[node name="Label_dodge" type="Label" parent="list_node/dodge"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
 text = "dodge : "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label_dodge_timer_reload" type="Label" parent="dodge"]
-margin_left = 31.0
-margin_top = 176.0
-margin_right = 148.0
-margin_bottom = 190.0
+[node name="Label_dodge_timer_reload" type="Label" parent="list_node/dodge"]
+margin_top = 36.0
+margin_right = 1004.0
+margin_bottom = 50.0
 text = "dodge timer reload : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="attack" type="VBoxContainer" parent="list_node"]
+margin_top = 244.0
+margin_right = 1004.0
+margin_bottom = 330.0
+
+[node name="Label_can_attack" type="Label" parent="list_node/attack"]
+margin_right = 1004.0
+margin_bottom = 14.0
+text = "can attack :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_attack_timer" type="Label" parent="list_node/attack"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
+text = "attack timer reload :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_last_attack_shoot" type="Label" parent="list_node/attack"]
+margin_top = 36.0
+margin_right = 1004.0
+margin_bottom = 50.0
+text = "last attack is shoot :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_attack_ammo" type="Label" parent="list_node/attack"]
+margin_top = 54.0
+margin_right = 1004.0
+margin_bottom = 68.0
+text = "attack ammo :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_attack_reload_ammo" type="Label" parent="list_node/attack"]
+margin_top = 72.0
+margin_right = 1004.0
+margin_bottom = 86.0
+text = "attack_reload_ammo:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score_board" type="VBoxContainer" parent="list_node"]
+margin_top = 350.0
+margin_right = 1004.0
+margin_bottom = 418.0
+
+[node name="kill" type="Label" parent="list_node/score_board"]
+margin_right = 1004.0
+margin_bottom = 14.0
+text = "kill :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="death" type="Label" parent="list_node/score_board"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
+text = "death :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="has_start" type="Label" parent="list_node/score_board"]
+margin_top = 36.0
+margin_right = 1004.0
+margin_bottom = 50.0
+text = "game has start : "
+
+[node name="timer_game" type="Label" parent="list_node/score_board"]
+margin_top = 54.0
+margin_right = 1004.0
+margin_bottom = 68.0
+text = "time of game :"
+
+[node name="shield" type="VBoxContainer" parent="list_node"]
+margin_top = 438.0
+margin_right = 1004.0
+margin_bottom = 470.0
+
+[node name="shield_on" type="Label" parent="list_node/shield"]
+margin_right = 1004.0
+margin_bottom = 14.0
+text = "shield is on :"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time_shield" type="Label" parent="list_node/shield"]
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 32.0
+text = "timer shield active :"
 __meta__ = {
 "_edit_use_anchors_": false
 }

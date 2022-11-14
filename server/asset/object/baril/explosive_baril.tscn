@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://asset/object/baril/explosive_baril.gd" type="Script" id=1]
+
+[node name="explosive_baril" type="Spatial"]
+script = ExtResource( 1 )

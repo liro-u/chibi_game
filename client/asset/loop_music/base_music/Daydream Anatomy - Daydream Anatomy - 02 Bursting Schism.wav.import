@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Daydream Anatomy - Daydream Anatomy - 02 Bursting Schism.wav-c2f81aa1c74c76cc0aafb9375720221f.sample"
+
+[deps]
+
+source_file="res://asset/loop_music/base_music/Daydream Anatomy - Daydream Anatomy - 02 Bursting Schism.wav"
+dest_files=[ "res://.import/Daydream Anatomy - Daydream Anatomy - 02 Bursting Schism.wav-c2f81aa1c74c76cc0aafb9375720221f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://asset/world/world_setup.gd" type="Script" id=1]
+[ext_resource path="res://asset/object/spawn_nb_item.gd" type="Script" id=2]
+[ext_resource path="res://asset/object/baril/explosive_baril.tscn" type="PackedScene" id=3]
+[ext_resource path="res://asset/object/healer/healer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://asset/object/spawn_nb_item.tscn" type="PackedScene" id=5]
+[ext_resource path="res://asset/object/healer/healer.gd" type="Script" id=6]
+
+[node name="fantasy_world" type="Spatial"]
+script = ExtResource( 1 )
+time_of_game = 1000
+
+[node name="Players" type="Node" parent="."]
+
+[node name="object" type="Node" parent="."]
+
+[node name="baril" type="Node" parent="object"]
+
+[node name="center" type="Node" parent="object/baril"]
+script = ExtResource( 2 )
+item = ExtResource( 3 )
+nb_item = 8
+
+[node name="explosive_baril" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril2" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril3" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril4" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril5" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril6" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril7" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="explosive_baril8" parent="object/baril/center" instance=ExtResource( 3 )]
+
+[node name="corner" parent="object/baril" instance=ExtResource( 5 )]
+item = ExtResource( 3 )
+nb_item = 8
+
+[node name="explosive_baril" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril2" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril3" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril4" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril5" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril6" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril7" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="explosive_baril8" parent="object/baril/corner" instance=ExtResource( 3 )]
+
+[node name="corner2" parent="object/baril" instance=ExtResource( 5 )]
+item = ExtResource( 3 )
+nb_item = 8
+
+[node name="explosive_baril" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril2" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril3" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril4" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril5" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril6" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril7" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="explosive_baril8" parent="object/baril/corner2" instance=ExtResource( 3 )]
+
+[node name="healer" type="Node" parent="object"]
+script = ExtResource( 2 )
+name_text = "healer2"
+item = ExtResource( 4 )
+nb_item = 2
+
+[node name="healer" type="Spatial" parent="object/healer" instance=ExtResource( 4 )]
+script = ExtResource( 6 )
+
+[node name="healer2" type="Spatial" parent="object/healer" instance=ExtResource( 4 )]
+script = ExtResource( 6 )

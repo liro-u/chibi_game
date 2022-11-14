@@ -1,0 +1,99 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://asset/object/healer/healer.gd" type="Script" id=1]
+[ext_resource path="res://asset/class/CurveTween.gd" type="Script" id=2]
+[ext_resource path="res://asset/object/healer/particle_albedo.png" type="Texture" id=3]
+[ext_resource path="res://asset/object/healer/floor_zone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://asset/object/healer/floor_texture/circle_texture.png" type="Texture" id=5]
+[ext_resource path="res://asset/object/healer/floor_texture/exterior_texture.png" type="Texture" id=6]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 1.8
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.494506, 1 ), -2.58287e-07, -2.58287e-07, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0, 0.214815, 0.407407, 0.733333, 1 )
+colors = PoolColorArray( 0.0431373, 0.137255, 0, 0, 0.3125, 1, 0, 1, 0.172549, 0.890196, 0, 1, 0.0431373, 0.788235, 0, 0.619608, 0.0313726, 0.964706, 0, 0 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0.462025, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -5.74384, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 50.0
+angle = 360.0
+angle_random = 1.0
+scale = 4.0
+scale_random = 1.0
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 5 )
+
+[sub_resource type="QuadMesh" id=9]
+
+[sub_resource type="SpatialMaterial" id=10]
+flags_transparent = true
+albedo_color = Color( 0.12549, 1, 0, 1 )
+albedo_texture = ExtResource( 6 )
+
+[sub_resource type="SpatialMaterial" id=11]
+flags_transparent = true
+albedo_color = Color( 0.12549, 1, 0, 1 )
+albedo_texture = ExtResource( 5 )
+
+[node name="healer" type="Area"]
+script = ExtResource( 1 )
+mesh_path = NodePath("orbs")
+higth_tween_path = NodePath("higth_tween")
+texture_floor_path = NodePath("floor_zone")
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0 )
+shape = SubResource( 1 )
+
+[node name="higth_tween" type="Tween" parent="."]
+repeat = true
+playback/repeat = true
+script = ExtResource( 2 )
+curve = SubResource( 2 )
+
+[node name="orbs" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0 )
+material_override = SubResource( 3 )
+amount = 20
+explosiveness = 0.3
+process_material = SubResource( 8 )
+draw_pass_1 = SubResource( 9 )
+
+[node name="floor_zone" type="Spatial" parent="."]
+transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.3, 0 )
+
+[node name="floor_interior" parent="floor_zone" instance=ExtResource( 4 )]
+SPEED = -180
+
+[node name="floor_exterior" parent="floor_zone" instance=ExtResource( 4 )]
+material_override = SubResource( 10 )
+SPEED = 100
+
+[node name="floor_circle" parent="floor_zone" instance=ExtResource( 4 )]
+material_override = SubResource( 11 )
+SPEED = 0
+[connection signal="body_entered" from="." to="." method="pick_up_health"]
+[connection signal="curve_tween" from="higth_tween" to="." method="_on_higth_tween_curve_tween"]

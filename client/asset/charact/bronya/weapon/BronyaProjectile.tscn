@@ -1,0 +1,105 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://asset/charact/bronya/weapon/BronyaProjectile.gd" type="Script" id=1]
+[ext_resource path="res://asset/charact/bronya/weapon/asset/projectile_albedo.png" type="Texture" id=3]
+[ext_resource path="res://asset/charact/bronya/weapon/asset/particle_albedo.png" type="Texture" id=4]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 0.5, 1.5 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.555556, 1 )
+colors = PoolColorArray( 0.0822901, 0.0389557, 0.0898438, 1, 1, 0, 0.890625, 1, 1, 0, 0.914063, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0.857215 ), 0.0, 0.0, 0, 0, Vector2( 0.746835, 0.866306 ), -0.890804, -0.890804, 0, 0, Vector2( 1, 0 ), -8.2648, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+emission_shape = 1
+emission_sphere_radius = 0.08
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+angle = 360.0
+angle_random = 1.0
+scale = 3.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 4 )
+
+[sub_resource type="QuadMesh" id=8]
+
+[sub_resource type="SpatialMaterial" id=9]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 4 )
+
+[sub_resource type="Gradient" id=10]
+offsets = PoolRealArray( 0.0148148, 0.0740741, 0.592593, 1 )
+colors = PoolColorArray( 0.0901961, 0, 0.0901961, 0, 0.992188, 0, 1, 1, 0.992157, 0, 1, 0.690196, 0.992157, 0, 1, 0 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+direction = Vector3( 0, 0, -1 )
+spread = 10.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.8
+angular_velocity = 30.0
+angular_velocity_random = 0.6
+linear_accel = -0.18
+angle = 360.0
+angle_random = 1.0
+scale = 1.5
+color_ramp = SubResource( 11 )
+
+[sub_resource type="QuadMesh" id=13]
+
+[node name="BronyaProjectile" type="Spatial"]
+script = ExtResource( 1 )
+speed_rotation = 5
+
+[node name="Area" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.45525 )
+shape = SubResource( 1 )
+
+[node name="sphere_particles" type="Particles" parent="."]
+material_override = SubResource( 2 )
+amount = 90
+process_material = SubResource( 7 )
+draw_pass_1 = SubResource( 8 )
+
+[node name="trail_particles" type="Particles" parent="."]
+material_override = SubResource( 9 )
+amount = 40
+lifetime = 0.5
+local_coords = false
+process_material = SubResource( 12 )
+draw_pass_1 = SubResource( 13 )
+[connection signal="body_entered" from="Area" to="." method="collided"]

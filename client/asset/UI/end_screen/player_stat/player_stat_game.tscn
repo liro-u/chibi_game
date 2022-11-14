@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://asset/UI/end_screen/player_stat/player_stat_game.gd" type="Script" id=1]
+
+[node name="player_stat_game" type="HBoxContainer"]
+margin_right = 924.0
+margin_bottom = 31.0
+custom_constants/separation = 15
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+name_label_path = NodePath("name")
+kill_label_path = NodePath("kill")
+death_label_path = NodePath("death")
+ratio_label_path = NodePath("ratio")
+
+[node name="name" type="Label" parent="."]
+margin_top = 8.0
+margin_right = 715.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "exemple_name"
+
+[node name="kill" type="Label" parent="."]
+margin_left = 730.0
+margin_top = 8.0
+margin_right = 769.0
+margin_bottom = 22.0
+text = "17 kill"
+
+[node name="death" type="Label" parent="."]
+margin_left = 784.0
+margin_top = 8.0
+margin_right = 840.0
+margin_bottom = 22.0
+text = "18 death"
+
+[node name="ratio" type="Label" parent="."]
+margin_left = 855.0
+margin_top = 8.0
+margin_right = 924.0
+margin_bottom = 22.0
+text = "ratio : 0.97"

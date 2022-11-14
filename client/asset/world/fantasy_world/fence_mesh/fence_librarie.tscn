@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence1/fence1.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence_pillar1/fence_pillar1.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence3/fence3.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence_plank2/fence_plank2.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence_plank1/fence_plank1.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence2/fence2.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/fence_pillar2/fence_pillar2.obj" type="ArrayMesh" id=7]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/gltf/material/fence_material1.tres" type="Material" id=8]
+
+[node name="fence_librarie" type="Spatial"]
+
+[node name="fence1" type="MeshInstance" parent="."]
+mesh = ExtResource( 1 )
+material/0 = ExtResource( 8 )
+
+[node name="fence2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 )
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 8 )
+
+[node name="fence3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0 )
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 8 )
+
+[node name="fence_pillar1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 8 )
+
+[node name="fence_pillar2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1 )
+mesh = ExtResource( 7 )
+material/0 = ExtResource( 8 )
+
+[node name="fence_plank1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+mesh = ExtResource( 5 )
+material/0 = ExtResource( 8 )
+
+[node name="fence_plank2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2 )
+mesh = ExtResource( 4 )
+material/0 = ExtResource( 8 )

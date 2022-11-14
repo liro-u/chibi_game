@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://asset/world/fantasy_world/rock_mesh/gltf/rock1_2_3/rock2.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://asset/object/rock/rock1_2_3_material.tres" type="Material" id=2]
+[ext_resource path="res://asset/world/fantasy_world/rock_mesh/gltf/rock1_2_3/rock1.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://asset/world/fantasy_world/rock_mesh/gltf/rock1_2_3/rock3.obj" type="ArrayMesh" id=4]
+
+[node name="rock_librarie" type="Spatial"]
+
+[node name="rock1" type="MeshInstance" parent="."]
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 2 )
+
+[node name="rock2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9 )
+mesh = ExtResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="rock3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+mesh = ExtResource( 4 )
+material/0 = ExtResource( 2 )
