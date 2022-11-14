@@ -23,6 +23,9 @@ func set_all(mode, world):
 		"dev_world":
 			world_name_label.text = "Dev World"
 			world_illusatration.texture = load("res://asset/world/TestingArea/texture_illustration.PNG")
+		"fantasy_world":
+			world_name_label.text = "Fantasy world"
+			world_illusatration.texture = load("res://asset/world/fantasy_world/texture_illustration.PNG")
 		_:
 			world_name_label.text = ""
 			

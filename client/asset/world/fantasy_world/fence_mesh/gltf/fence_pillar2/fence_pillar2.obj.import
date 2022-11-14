@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/fence_pillar2.obj-b1cfc7014c7345e11b4b318d26206ecf.mesh"
+
+[deps]
+
+files=[ "res://.import/fence_pillar2.obj-b1cfc7014c7345e11b4b318d26206ecf.mesh" ]
+
+source_file="res://asset/world/fantasy_world/fence_mesh/gltf/fence_pillar2/fence_pillar2.obj"
+dest_files=[ "res://.import/fence_pillar2.obj-b1cfc7014c7345e11b4b318d26206ecf.mesh", "res://.import/fence_pillar2.obj-b1cfc7014c7345e11b4b318d26206ecf.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

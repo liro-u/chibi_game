@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Daydream Anatomy - Daydream Anatomy - 05 Energy.wav-3a594709f7c86fdd7e341e196ff1e81e.sample"
+
+[deps]
+
+source_file="res://asset/loop_music/base_music/Daydream Anatomy - Daydream Anatomy - 05 Energy.wav"
+dest_files=[ "res://.import/Daydream Anatomy - Daydream Anatomy - 05 Energy.wav-3a594709f7c86fdd7e341e196ff1e81e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

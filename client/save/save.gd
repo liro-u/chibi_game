@@ -1,7 +1,7 @@
 extends Node
 
 const SAVEGAME = "user://Savegame.json"
-var reset_data = true
+var reset_data = false
 
 var save_data = {}
 

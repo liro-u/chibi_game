@@ -19,7 +19,7 @@ func _ready():
 	selected_port = get_node(selected_port_path)
 	charact_button = get_node(charact_button_path)
 	
-	charact_button.selected = Save.save_data["Last_charact"]
+	charact_button.selected = int(Save.save_data["Last_charact"])
 	player_name.text = Save.save_data["Player_name"]
 	selected_IP.text = Server.DEFAULT_IP
 	selected_port.text = str(Server.DEFAULT_PORT)

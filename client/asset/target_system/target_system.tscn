@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://asset/target_system/system_target.gd" type="Script" id=1]
+[ext_resource path="res://asset/target_system/target_texture.png" type="Texture" id=2]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 22.0
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+flags_unshaded = true
+flags_no_depth_test = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 1, 0.4, 0, 1 )
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=3]
+size = Vector2( 4, 4 )
+
+[node name="target_system" type="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02849, 0 )
+script = ExtResource( 1 )
+zone_detection_path = NodePath("CollisionShape")
+raycast_path = NodePath("RayCast")
+aim_marker_path = NodePath("aim_marker")
+timer_path = NodePath("Timer")
+debug_path = NodePath("debug")
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 0, -22 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.1
+autostart = true
+
+[node name="aim_marker" type="MeshInstance" parent="."]
+visible = false
+material_override = SubResource( 2 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="debug" type="Spatial" parent="."]
+
+[node name="RayCast" type="RayCast" parent="debug"]
+transform = Transform( 0.927184, 0, 0.374607, 0, 1, 0, -0.374607, 0, 0.927184, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 22 )
+
+[node name="RayCast2" type="RayCast" parent="debug"]
+transform = Transform( 0.927184, 0, -0.374607, 0, 1, 0, 0.374607, 0, 0.927184, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 22 )
+[connection signal="body_entered" from="." to="." method="new_body_entered"]
+[connection signal="body_exited" from="." to="." method="body_exited"]
+[connection signal="timeout" from="Timer" to="." method="update"]

@@ -98,6 +98,8 @@ func load_world():
 	match world_name:
 		"dev_world":
 			world_path = "res://asset/world/TestingArea/TestingArea.tscn" 
+		"fantasy_world":
+			world_path = "res://asset/world/fantasy_world/fantasy_world.tscn"
 	world = load(world_path).instance()
 	get_tree().get_root().add_child(world)
 
@@ -126,7 +128,9 @@ func _on_max_player_button_text_entered(new_text):
 func _on_world_button_item_selected(index):
 	match index:
 		0:
-			world_name = "dev_world" 
+			world_name = "dev_world"
+		1:
+			world_name = "fantasy_world"
 
 remote func start_game():
 	player_ready += 1

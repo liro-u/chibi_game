@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/mesh.obj-c8da2eca6ad2fba7095b39f4a0392c75.mesh"
+
+[deps]
+
+files=[ "res://.import/mesh.obj-c8da2eca6ad2fba7095b39f4a0392c75.mesh" ]
+
+source_file="res://asset/object/baril/mesh.obj"
+dest_files=[ "res://.import/mesh.obj-c8da2eca6ad2fba7095b39f4a0392c75.mesh", "res://.import/mesh.obj-c8da2eca6ad2fba7095b39f4a0392c75.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

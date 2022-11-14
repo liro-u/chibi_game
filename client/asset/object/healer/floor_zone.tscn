@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://asset/object/healer/floor_zone.gd" type="Script" id=1]
+[ext_resource path="res://asset/object/healer/floor_texture/interior_texture.png" type="Texture" id=2]
+[ext_resource path="res://asset/class/CurveTween.gd" type="Script" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_transparent = true
+albedo_color = Color( 0.12549, 1, 0, 1 )
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=2]
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0 ), 0.0, 1.4, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[node name="floor_zone" type="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0165179, 0 )
+material_override = SubResource( 1 )
+mesh = SubResource( 2 )
+material/0 = null
+script = ExtResource( 1 )
+alpha_tween_path = NodePath("alpha_tween")
+
+[node name="alpha_tween" type="Tween" parent="."]
+script = ExtResource( 3 )
+curve = SubResource( 3 )
+[connection signal="curve_tween" from="alpha_tween" to="." method="set_alpha_mat"]

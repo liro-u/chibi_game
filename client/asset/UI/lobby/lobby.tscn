@@ -117,6 +117,7 @@ margin_top = 181.0
 margin_right = 338.0
 margin_bottom = 201.0
 text = "Join game"
+
 [connection signal="text_changed" from="CenterContainer/VBoxContainer/GridContainer/NameTextBox" to="." method="_on_NameTextBox_text_changed"]
 [connection signal="item_selected" from="CenterContainer/VBoxContainer/GridContainer/charact_button" to="." method="_on_charact_button_item_selected"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/JoinBtn" to="." method="_on_JoinBtn_pressed"]

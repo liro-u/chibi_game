@@ -58,7 +58,8 @@ sync func make_attack():
 	
 	projectile.exception = exception_colision
 	projectile.player_property_id = int(name)
-	var target_node = $target_view.refresh_current_target_player()
+	
+	var target_node = $target_system.current_target
 	if target_node != null:
 		var target_point = target_node.global_transform.origin
 		var projectile_point_coord = projectile_point.global_transform.origin
@@ -67,5 +68,6 @@ sync func make_attack():
 		projectile.rotate_y(PI)
 	else:
 		projectile.global_transform = projectile_point.global_transform
+	audio_node.play_sound("attack")
 #-----------------------------------------------------
 

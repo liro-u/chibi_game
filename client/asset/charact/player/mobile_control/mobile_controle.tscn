@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://asset/charact/player/mobile_control/action_button/asset/attack.png" type="Texture" id=1]
+[ext_resource path="res://asset/charact/player/mobile_control/action_button/asset/dodge.png" type="Texture" id=2]
+[ext_resource path="res://asset/charact/player/mobile_control/joystick/joystick.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 75.0
+
+[node name="mobile_controle" type="CanvasLayer"]
+
+[node name="joystick" parent="." instance=ExtResource( 3 )]
+position = Vector2( 136, 492 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="attack" type="TouchScreenButton" parent="."]
+position = Vector2( 910, 460 )
+scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 1 )
+shape = SubResource( 1 )
+action = "attack"
+
+[node name="dodge" type="TouchScreenButton" parent="."]
+position = Vector2( 790, 460 )
+scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 2 )
+shape = SubResource( 1 )
+action = "dodge"

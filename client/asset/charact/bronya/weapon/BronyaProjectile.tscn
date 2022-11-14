@@ -20,7 +20,7 @@ albedo_texture = ExtResource( 3 )
 
 [sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0, 0.555556, 1 )
-colors = PoolColorArray( 0.248522, 0.0427147, 0.0427147, 1, 0.998522, 0, 0.740035, 1, 1, 0, 0.975506, 1 )
+colors = PoolColorArray( 0.0822901, 0.0389557, 0.0898438, 1, 1, 0, 0.890625, 1, 1, 0, 0.914063, 1 )
 
 [sub_resource type="GradientTexture" id=4]
 gradient = SubResource( 3 )

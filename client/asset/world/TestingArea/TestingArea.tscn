@@ -1,12 +1,14 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://asset/texture/prototype/Dark/texture_01.png" type="Texture" id=1]
 [ext_resource path="res://asset/texture/prototype/Orange/texture_01.png" type="Texture" id=2]
-[ext_resource path="res://asset/spawning_systeme/PlayerSpawnPointList.tscn" type="PackedScene" id=3]
-[ext_resource path="res://asset/UI/debug/debug_UI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://asset/spawning_systeme/PlayerSpawn.tscn" type="PackedScene" id=3]
+[ext_resource path="res://asset/object/baril/explosive_baril.tscn" type="PackedScene" id=4]
 [ext_resource path="res://asset/camera/CamRoot.tscn" type="PackedScene" id=5]
-[ext_resource path="res://asset/spawning_systeme/PlayerSpawn.gd" type="Script" id=6]
+[ext_resource path="res://asset/object/healer/healer.tscn" type="PackedScene" id=6]
 [ext_resource path="res://asset/UI/game_ui/game_ui.tscn" type="PackedScene" id=7]
+[ext_resource path="res://asset/loop_music/loop_music.tscn" type="PackedScene" id=8]
+[ext_resource path="res://asset/loop_music/base_music/Daydream Anatomy - Daydream Anatomy - 02 Bursting Schism.wav" type="AudioStream" id=9]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 100, 0.5, 100 )
@@ -289,9 +291,6 @@ material/0 = SubResource( 5 )
 [node name="CollisionShape" type="CollisionShape" parent="obstacle/escalier rond/cube5/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="debug_UI" parent="." instance=ExtResource( 4 )]
-visible = false
-
 [node name="Game_UI" parent="." instance=ExtResource( 7 )]
 
 [node name="CamRoot" parent="." instance=ExtResource( 5 )]
@@ -300,46 +299,94 @@ visible = false
 
 [node name="PlayersWeapon" type="Node" parent="."]
 
-[node name="PlayerSpawn" type="Node" parent="."]
-script = ExtResource( 6 )
+[node name="PlayerSpawn" parent="." instance=ExtResource( 3 )]
 
-[node name="Team1_SpawnPoint" parent="PlayerSpawn" instance=ExtResource( 3 )]
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, 0 )
 
-[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 14 )
+[node name="Position3D3" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, 0 )
 
-[node name="Position3D2" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 14 )
+[node name="Position3D2" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 0, 0 )
 
-[node name="Position3D3" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 14 )
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.019, 0, 0 )
 
-[node name="Team0_SpawnPoint" parent="PlayerSpawn" instance=ExtResource( 3 )]
+[node name="Position3D2" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.019, 0, -8 )
 
-[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -13 )
+[node name="Position3D3" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.019, 0, -14 )
 
-[node name="Position3D2" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -9 )
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="0"]
 
-[node name="Position3D3" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -18 )
+[node name="Position3D2" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -21 )
 
-[node name="SoloTeam_SpawnPoint" parent="PlayerSpawn" instance=ExtResource( 3 )]
+[node name="Position3D3" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 14 )
 
-[node name="Position3D" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+[node name="Position3D4" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 14 )
 
-[node name="Position3D2" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 20 )
+[node name="Position3D5" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, -21 )
 
-[node name="Position3D3" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -6 )
-
-[node name="Position3D4" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -6 )
-
-[node name="Position3D5" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint"]
+[node name="Position3D6" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -21 )
 
+[node name="loop_music" parent="." instance=ExtResource( 8 )]
+stream = ExtResource( 9 )
+
+[node name="object" type="Node" parent="."]
+
+[node name="baril" type="Node" parent="object"]
+
+[node name="explosive_baril" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+
+[node name="explosive_baril2" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5 )
+
+[node name="explosive_baril3" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10 )
+
+[node name="explosive_baril4" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0 )
+
+[node name="explosive_baril5" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 5 )
+
+[node name="explosive_baril6" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 10 )
+
+[node name="explosive_baril7" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 0 )
+
+[node name="explosive_baril8" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 5 )
+
+[node name="explosive_baril9" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 10 )
+
+[node name="explosive_baril10" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, 0 )
+
+[node name="explosive_baril11" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, 5 )
+
+[node name="explosive_baril12" parent="object/baril" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, 10 )
+
+[node name="healer" type="Node" parent="object"]
+
+[node name="healer" parent="object/healer" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -7 )
+
+[node name="healer2" parent="object/healer" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 19 )
+
 [editable path="CamRoot"]
+
+[editable path="PlayerSpawn"]

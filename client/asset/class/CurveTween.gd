@@ -7,8 +7,6 @@ export(Curve) var curve
 var start = 0.0
 var end = 1.0
 
-func _ready():
-	play(1, 0.0, 1.0)
 	
 func play(duration, start_in, end_in):
 	assert(curve, "this CurveTween needs a curve added in the inspector")

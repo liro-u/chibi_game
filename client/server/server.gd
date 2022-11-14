@@ -1,6 +1,6 @@
 extends Node
 
-const DEFAULT_IP = "192.168.1.94"
+const DEFAULT_IP = "192.168.1.130"
 const DEFAULT_PORT = 3234
 
 var network
@@ -11,6 +11,7 @@ var local_player_id = 0
 sync var players = {}
 sync var player_data = {}
 
+var lobby_path = "res://asset/UI/lobby/lobby.tscn"
 var wait_screen
 var wait_screen_instance = preload("res://asset/UI/wait_screen/wait_screen.tscn")
 var end_screen_instance = preload("res://asset/UI/end_screen/final_screen.tscn")
@@ -51,6 +52,9 @@ func _connected_ok():
 	
 func _connected_fail():
 	print("Failed to connect")
+	get_tree().call_group("WaitingRoom", "queue_free")
+	var lobby = load(lobby_path).instance()
+	get_tree().get_root().add_child(lobby)
 	
 func _server_disconnected():
 	print("Server Disconnected")
@@ -74,6 +78,8 @@ func load_world(world_name):
 	match world_name:
 		"dev_world":
 			world_path = "res://asset/world/TestingArea/TestingArea.tscn"
+		"fantasy_world":
+			world_path = "res://asset/world/fantasy_world/fantasy_world.tscn"
 	world = load(world_path).instance()
 	get_tree().get_root().add_child(world)
 	get_tree().call_group("WaitingRoom","queue_free")
@@ -101,9 +107,11 @@ sync func spawn_player(id):
 	players_node.add_child(player)
 	player.global_transform = player_spawn_point.get_next_position(teamMode)
 	if id == local_player_id:
-		world.get_node("debug_UI").set_player(player)
 		game_ui.set_player(player)
 		world.get_node("CamRoot").set_follow_point(player.get_node("CameraPoint"))
+		var listener = Listener.new()
+		player.add_child(listener)
+		listener.make_current()
 	player.set_network_master(id)
 	if players_node.get_child_count() >= players.size():
 		rpc_id(1, "start_game")

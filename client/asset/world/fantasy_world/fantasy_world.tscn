@@ -1,0 +1,270 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://asset/world/fantasy_world/building_mesh/building_mesh_librarie.tres" type="MeshLibrary" id=1]
+[ext_resource path="res://asset/world/fantasy_world/rock_mesh/rock_mesh_librarie.tres" type="MeshLibrary" id=2]
+[ext_resource path="res://asset/world/fantasy_world/fence_mesh/fence_mesh_librarie.tres" type="MeshLibrary" id=3]
+[ext_resource path="res://asset/world/fantasy_world/ground/texture/Specular.tga.png" type="Texture" id=4]
+[ext_resource path="res://asset/spawning_systeme/PlayerSpawn.tscn" type="PackedScene" id=5]
+[ext_resource path="res://asset/loop_music/loop_music.tscn" type="PackedScene" id=6]
+[ext_resource path="res://asset/UI/game_ui/game_ui.tscn" type="PackedScene" id=7]
+[ext_resource path="res://asset/camera/CamRoot.tscn" type="PackedScene" id=8]
+[ext_resource path="res://asset/loop_music/base_music/Daydream Anatomy - Daydream Anatomy - 05 Energy.wav" type="AudioStream" id=9]
+[ext_resource path="res://asset/object/rock/rock_librarie.tres" type="MeshLibrary" id=10]
+[ext_resource path="res://asset/object/baril/explosive_baril.tscn" type="PackedScene" id=11]
+[ext_resource path="res://asset/object/healer/healer.tscn" type="PackedScene" id=12]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1, 7.4, 43.7 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 46.1, 7.4, 1 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 200, 0.5, 200 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_texture = ExtResource( 4 )
+uv1_scale = Vector3( 0.3, 1, 0.3 )
+uv1_triplanar = true
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 100, 0.25, 100 )
+
+[node name="fantasy_world" type="Spatial"]
+
+[node name="Game_UI" parent="." instance=ExtResource( 7 )]
+
+[node name="CamRoot" parent="." instance=ExtResource( 8 )]
+
+[node name="Players" type="Node" parent="."]
+
+[node name="PlayersWeapon" type="Node" parent="."]
+
+[node name="PlayerSpawn" parent="." instance=ExtResource( 5 )]
+
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team1_SpawnPoint" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.8783, 0, 15.4715 )
+
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/Team0_SpawnPoint" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5547, 0, -46.7655 )
+
+[node name="Position3D" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.5, 0, 14.7 )
+
+[node name="Position3D3" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0, -48.1 )
+
+[node name="Position3D2" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, -17.3 )
+
+[node name="Position3D6" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, -51.1 )
+
+[node name="Position3D7" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, 16.9 )
+
+[node name="Position3D4" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3, 0, -17.3 )
+
+[node name="Position3D5" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.4, 0, -17.3 )
+
+[node name="Position3D8" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.8783, 0, 15.4715 )
+
+[node name="Position3D9" type="Position3D" parent="PlayerSpawn/SoloTeam_SpawnPoint" index="8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5547, 0, -46.7655 )
+
+[node name="loop_music" parent="." instance=ExtResource( 6 )]
+stream = ExtResource( 9 )
+
+[node name="world_mesh_collision" type="Spatial" parent="."]
+
+[node name="house_gridmap" type="GridMap" parent="world_mesh_collision"]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 41.8, 0, -50.2 )
+mesh_library = ExtResource( 1 )
+cell_size = Vector3( 1, 1, 1 )
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PoolIntArray( 65482, 0, 1, 65484, 2, 1048577, 2, 6, 1441792, 4, 10, 655360, 65480, 17, 537919488, 65478, 20, 537526272, 65479, 23, 536870912, 65486, 36, 655361, 65481, 65528, 655360, 65483, 65531, 0, 4, 65533, 1441793 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="rock_gridmap" type="GridMap" parent="world_mesh_collision"]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 41.8, 0, -50.2 )
+mesh_library = ExtResource( 2 )
+cell_size = Vector3( 1, 1, 1 )
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PoolIntArray( 65472, 1, 655361, 9, 2, 655361, 7, 5, 1, 65481, 5, 655361, 65478, 7, 655361, 65468, 8, 1441793, 6, 11, 1441793, 65489, 13, 0, 10, 14, 1, 65475, 14, 1441794, 65488, 14, 1048576, 65489, 14, 538312704, 10, 15, 1, 65489, 15, 1048576, 65468, 16, 1, 14, 18, 1441793, 65471, 20, 1441793, 65469, 24, 655361, 65471, 28, 1441793, 65480, 28, 1441794, 20, 31, 1441793, 14, 33, 655361, 65474, 33, 655361, 65476, 37, 1441793, 9, 38, 1048577, 65475, 42, 1, 65487, 42, 655361, 5, 43, 1, 65465, 43, 655361, 65490, 43, 1441793, 65503, 43, 655361, 65528, 43, 655361, 65483, 44, 1048577, 65494, 44, 1, 65509, 44, 1441793, 65521, 45, 1048577, 65469, 46, 1441793, 65499, 46, 1048577, 65534, 46, 655361, 65514, 49, 1, 65339, 83, 1441792, 65506, 65522, 655361, 65518, 65522, 1, 65523, 65522, 1441794, 65506, 65523, 1441792, 65512, 65523, 1441793, 0, 65524, 1, 65530, 65524, 0, 65494, 65525, 0, 65496, 65525, 1048576, 65526, 65525, 1441792, 65529, 65525, 1048576, 65494, 65526, 1441792, 65525, 65526, 1441792, 65526, 65526, 1441792, 65527, 65526, 1441792, 65528, 65526, 655360, 65495, 65527, 1048576, 65526, 65527, 1441792, 6, 65528, 655361, 7, 65533, 1 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="fence_gridmap" type="GridMap" parent="world_mesh_collision"]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 41.8, 0, -50.2 )
+mesh_library = ExtResource( 3 )
+cell_size = Vector3( 0.35, 0.35, 0.35 )
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PoolIntArray( 65410, 2, 1441793, 65534, 2, 1048578, 65410, 6, 1441793, 65534, 6, 1048578, 65410, 10, 1441793, 65534, 10, 1048578, 65410, 14, 1441793, 65410, 18, 1441793, 65534, 21, 1441792, 65410, 22, 1441793, 65534, 25, 1441793, 65410, 26, 1441793, 65534, 29, 1441793, 65410, 30, 1441793, 65534, 33, 1441793, 65410, 34, 1441793, 65534, 37, 1441793, 65410, 38, 1441793, 65534, 40, 1441798, 0, 42, 1, 3, 42, 1, 65410, 42, 1441793, 65534, 44, 1441794, 65410, 46, 1441793, 65534, 48, 1441794, 65410, 50, 1441793, 65534, 52, 1441794, 65410, 54, 1441793, 65534, 56, 1441794, 65410, 58, 1441793, 65534, 60, 1441794, 65410, 62, 1441793, 65534, 64, 1441794, 0, 66, 1, 4, 66, 1, 8, 66, 1, 12, 66, 1, 16, 66, 1, 20, 66, 1, 24, 66, 1, 28, 66, 1, 32, 66, 1, 65410, 66, 1441793, 37, 68, 1441792, 65534, 68, 1441792, 65410, 70, 1441793, 37, 72, 1441798, 65534, 72, 1441798, 37, 74, 1441798, 65410, 74, 1441793, 65534, 74, 1441798, 37, 78, 1441792, 65410, 78, 1441793, 65534, 78, 1441794, 0, 80, 655361, 4, 80, 655361, 8, 80, 655361, 12, 80, 655361, 16, 80, 537526273, 20, 80, 537526273, 24, 80, 655361, 28, 80, 537526273, 32, 80, 655361, 65410, 82, 1441793, 65534, 82, 538312705, 65410, 86, 538312705, 65534, 86, 1441793, 65410, 90, 538312705, 65534, 90, 538312705, 65410, 94, 1441793, 65534, 94, 538312705, 65410, 98, 538312705, 65534, 98, 1441793, 65410, 102, 1441793, 65534, 102, 1441793, 65410, 106, 1441793, 65534, 106, 1441793, 65412, 108, 537526273, 65416, 108, 537526273, 65420, 108, 537526273, 65424, 108, 537526273, 65428, 108, 537526273, 65432, 108, 655361, 65436, 108, 655361, 65440, 108, 537526273, 65444, 108, 655361, 65448, 108, 655361, 65452, 108, 537526273, 65456, 108, 655361, 65460, 108, 655361, 65464, 108, 655361, 65468, 108, 655361, 65472, 108, 655361, 65476, 108, 655361, 65480, 108, 537526273, 65484, 108, 655361, 65488, 108, 655361, 65492, 108, 655361, 65496, 108, 655361, 65500, 108, 655361, 65504, 108, 655361, 65508, 108, 655361, 65512, 108, 655361, 65516, 108, 655361, 65520, 108, 655361, 65524, 108, 655361, 65528, 108, 655361, 65532, 108, 655361, 65412, 65525, 655361, 65415, 65525, 655361, 65418, 65525, 655361, 65421, 65525, 655361, 65425, 65525, 655361, 65429, 65525, 655361, 65433, 65525, 655361, 65437, 65525, 655361, 65441, 65525, 655361, 65445, 65525, 655361, 65449, 65525, 655361, 65453, 65525, 655361, 65457, 65525, 655361, 65461, 65525, 655361, 65465, 65525, 655361, 65469, 65525, 655361, 65473, 65525, 655361, 65477, 65525, 655361, 65481, 65525, 655361, 65485, 65525, 655361, 65489, 65525, 655361, 65493, 65525, 655361, 65497, 65525, 655361, 65501, 65525, 655361, 65505, 65525, 655361, 65509, 65525, 655361, 65513, 65525, 655361, 65517, 65525, 655361, 65521, 65525, 655361, 65525, 65525, 655361, 65529, 65525, 655361, 65533, 65525, 655361, 65410, 65527, 1441793, 65410, 65530, 1441793, 65410, 65534, 1441793, 65534, 65534, 1048578, 65534, 65535, 1048580 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="wall_colision" type="Spatial" parent="world_mesh_collision"]
+
+[node name="StaticBody" type="StaticBody" parent="world_mesh_collision/wall_colision"]
+
+[node name="CollisionShape" type="CollisionShape" parent="world_mesh_collision/wall_colision/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 0, -15.3 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="world_mesh_collision/wall_colision/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47.1, 0, -15.3 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="world_mesh_collision/wall_colision/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, -58.7 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape4" type="CollisionShape" parent="world_mesh_collision/wall_colision/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 25.9 )
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="world_mesh_collision"]
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="StaticBody" type="StaticBody" parent="world_mesh_collision/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="world_mesh_collision/MeshInstance/StaticBody"]
+shape = SubResource( 5 )
+
+[node name="object" type="Node" parent="."]
+
+[node name="baril" type="Node" parent="object"]
+
+[node name="center" type="Node" parent="object/baril"]
+
+[node name="explosive_baril" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.45002, -10.6 )
+
+[node name="explosive_baril2" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.45002, -10.6 )
+
+[node name="explosive_baril3" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.1, 1.45002, -10.6 )
+
+[node name="explosive_baril4" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.45002, -16.7 )
+
+[node name="explosive_baril5" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.1, 1.45002, -22.7 )
+damage_zone_path = NodePath("../explosive_baril5/damage_zone")
+mesh_path = NodePath("../explosive_baril5/mesh")
+body_colision_path = NodePath("../explosive_baril5/StaticBody/CollisionShape")
+smoke_particle_path = NodePath("../explosive_baril5/smoke")
+ember_particle_path = NodePath("../explosive_baril5/ember")
+timer_before_explosion_path = NodePath("../explosive_baril5/time_before_explosion")
+animation_player_path = NodePath("../explosive_baril5/AnimationPlayer")
+
+[node name="explosive_baril6" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.1, 1.45002, -16.7 )
+
+[node name="explosive_baril7" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.45002, -22.7 )
+
+[node name="explosive_baril8" parent="object/baril/center" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.45002, -22.7 )
+
+[node name="corner" type="Node" parent="object/baril"]
+
+[node name="explosive_baril" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8, 1.45028, 0 )
+
+[node name="explosive_baril2" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6, 1.45073, 1.6 )
+
+[node name="explosive_baril3" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6, 1.45067, 7.6 )
+
+[node name="explosive_baril4" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27.4, 1.45021, 1.7 )
+
+[node name="explosive_baril5" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.45004, -4.1 )
+
+[node name="explosive_baril6" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.2, 1.45014, -4.1 )
+
+[node name="explosive_baril7" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 1.45026, 7.7 )
+
+[node name="explosive_baril8" parent="object/baril/corner" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.6, 1.45051, 13.4 )
+
+[node name="corner2" type="Node" parent="object/baril"]
+
+[node name="explosive_baril" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 11.7, 1.45012, -31.9 )
+
+[node name="explosive_baril2" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 13.5, 1.45008, -33.5 )
+
+[node name="explosive_baril3" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 13.5, 1.45, -39.5 )
+
+[node name="explosive_baril4" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 19.3, 1.45122, -33.6 )
+
+[node name="explosive_baril5" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 19.9, 1.45174, -27.8 )
+
+[node name="explosive_baril6" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 25.1, 1.45143, -27.8 )
+
+[node name="explosive_baril7" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.5, 1.45112, -39.6 )
+
+[node name="explosive_baril8" parent="object/baril/corner2" instance=ExtResource( 11 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 7.5, 1.45053, -45.3 )
+
+[node name="healer" type="Node" parent="object"]
+
+[node name="healer" parent="object/healer" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.4, 0, -1.9 )
+
+[node name="healer2" parent="object/healer" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, -29.9 )
+
+[node name="rock" type="Node" parent="object"]
+
+[node name="rock_colision_gridmap" type="GridMap" parent="object/rock"]
+mesh_library = ExtResource( 10 )
+cell_size = Vector3( 4, 2, 4 )
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PoolIntArray( 4, 0, 0, 65530, 0, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 6, 1, 0, 7, 1, 0, 65525, 1, 0, 65526, 1, 0, 65527, 1, 0, 65530, 1, 0, 65531, 1, 0, 65532, 1, 0, 65533, 1, 0, 4, 2, 0, 65533, 2, 0, 4, 3, 0, 65533, 3, 0, 1, 4, 0, 4, 4, 0, 65530, 4, 0, 65533, 4, 0, 1, 5, 0, 65530, 5, 0, 1, 6, 0, 65530, 6, 0, 4, 65522, 0, 65533, 65522, 0, 4, 65523, 0, 65533, 65523, 0, 1, 65524, 0, 4, 65524, 0, 65530, 65524, 0, 65533, 65524, 0, 1, 65525, 0, 65530, 65525, 0, 1, 65526, 0, 65530, 65526, 0, 1, 65527, 0, 2, 65527, 0, 3, 65527, 0, 4, 65527, 0, 7, 65527, 0, 8, 65527, 0, 9, 65527, 0, 10, 65527, 0, 65527, 65527, 0, 65528, 65527, 0, 65529, 65527, 0, 65530, 65527, 0, 65531, 65527, 0, 65532, 65527, 0, 65533, 65527, 0, 4, 65528, 0, 65530, 65528, 0, 4, 65529, 0, 65530, 65529, 0, 4, 65530, 0, 5, 65530, 0, 6, 65530, 0, 7, 65530, 0, 65525, 65530, 0, 65526, 65530, 0, 65527, 65530, 0, 65530, 65530, 0, 4, 65534, 0, 7, 65534, 0, 8, 65534, 0, 9, 65534, 0, 10, 65534, 0, 65527, 65534, 0, 65528, 65534, 0, 65529, 65534, 0, 65530, 65534, 0, 4, 65535, 0, 65530, 65535, 0 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[editable path="PlayerSpawn"]

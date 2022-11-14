@@ -17,6 +17,9 @@ var health_bar
 export(NodePath) var shield_mesh_path
 var shield_mesh
 
+export(NodePath) var audio_node_path
+var audio_node
+
 var camera_node
 
 var game_ui
@@ -113,11 +116,12 @@ func _ready():
 	body_collision = get_node(body_collision_path)
 	health_bar = get_node(health_bar_path)
 	shield_mesh = get_node(shield_mesh_path)
+	audio_node = get_node(audio_node_path)
 	
 	health_bar.set_property_node(self)
 	
 	if mesh_Path == "":
-		error_msg("no  mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
+		error_msg("no mesh PackedScene assign to " + name + " (path : " + get_path() + ")")
 	elif animationTree.active == false or animationTree.anim_player == "":
 		error_msg("link AnimationPlayer to " + animationTree.name + " and set it active" + " (path : " + animationTree.get_path() + ")")
 	else:
@@ -185,6 +189,7 @@ func process_input(delta):
 				if dir != Vector3(0, 0, 0):
 					is_dodging = true
 					dodge -= 1
+					audio_node.play_sound("dodge")
 	#---------------------------------------------------
 	
 	#--------------------------------------------------
@@ -266,6 +271,8 @@ func set_anim(anim_name):
 remote func update_anim(anim_name):
 	if not is_network_master():
 		animationTree["parameters/playback"].travel(anim_name)
+		if anim_name == "Dodge":
+			audio_node.play_sound("dodge")
 
 func anim_end(anim_name):
 	match anim_name:
@@ -320,6 +327,8 @@ sync func remove_health(damage):
 
 func process_respawn(delta):
 	if is_dead == false:
+		if last_damager_id == Server.local_player_id :
+			last_damager_id = null
 		rpc_id(1, "kill_player", int(name), last_damager_id)
 		is_dead = true
 	if is_dead == true:
@@ -341,6 +350,7 @@ func process_respawn(delta):
 sync func kill_player():
 	hide()
 	body_collision.disabled = true
+	audio_node.play_sound("die")
 
 sync func revive_player():
 	is_dead = false
@@ -350,6 +360,7 @@ sync func revive_player():
 	emit_signal("init_health_bar", health)
 	show()
 	body_collision.disabled = false
+	audio_node.play_sound("revive")
 #---------------------------------------------------
 #### DODGING ####
 

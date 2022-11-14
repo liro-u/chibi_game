@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "explosive_baril",
+"language": "GDScript",
+"path": "res://asset/object/baril/explosive_baril.gd"
+}, {
+"base": "Node",
+"class": "spawn_nb_item",
+"language": "GDScript",
+"path": "res://asset/object/spawn_nb_item.gd"
+} ]
 _global_script_class_icons={
-
+"explosive_baril": "",
+"spawn_nb_item": ""
 }
 
 [application]

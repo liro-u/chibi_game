@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://asset/spawning_systeme/PlayerSpawn.gd" type="Script" id=2]
+[ext_resource path="res://asset/spawning_systeme/PlayerSpawnPointList.tscn" type="PackedScene" id=3]
+
+[node name="PlayerSpawn" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Team1_SpawnPoint" parent="." instance=ExtResource( 3 )]
+
+[node name="Team0_SpawnPoint" parent="." instance=ExtResource( 3 )]
+
+[node name="SoloTeam_SpawnPoint" parent="." instance=ExtResource( 3 )]
